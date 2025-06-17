@@ -6,14 +6,15 @@ package frames;
 
 /**
  *
- * @author Usuario
+ * @author mateo
  */
-public class mainHuff extends javax.swing.JFrame {
+public class MainHamming extends javax.swing.JFrame {
 
     /**
-     * Creates new form mainHuff
+     * Creates new form Main
      */
-    public mainHuff() {
+    public MainHamming() {
+               setUndecorated(true);
         initComponents();
         this.setLocationRelativeTo(null);
     }
@@ -33,12 +34,13 @@ public class mainHuff extends javax.swing.JFrame {
         CompactB = new javax.swing.JButton();
         DescB = new javax.swing.JButton();
         tituloHuffman = new javax.swing.JLabel();
+        DescB1 = new javax.swing.JButton();
+        DescB2 = new javax.swing.JButton();
         exitB = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         volver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
 
         background.setBackground(new java.awt.Color(0, 102, 102));
         background.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -53,7 +55,7 @@ public class mainHuff extends javax.swing.JFrame {
         CompactB.setBackground(new java.awt.Color(0, 153, 153));
         CompactB.setFont(new java.awt.Font("OCR A Extended", 0, 26)); // NOI18N
         CompactB.setForeground(new java.awt.Color(255, 255, 255));
-        CompactB.setText("Compactar un archivo");
+        CompactB.setText("Proteger un archivo");
         CompactB.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         CompactB.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         CompactB.setMaximumSize(new java.awt.Dimension(336, 36));
@@ -73,7 +75,7 @@ public class mainHuff extends javax.swing.JFrame {
         DescB.setBackground(new java.awt.Color(0, 153, 153));
         DescB.setFont(new java.awt.Font("OCR A Extended", 0, 26)); // NOI18N
         DescB.setForeground(new java.awt.Color(255, 255, 255));
-        DescB.setText("Descompactar un archivo");
+        DescB.setText("Desproteger archivo corrigiendo");
         DescB.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         DescB.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         DescB.setMaximumSize(new java.awt.Dimension(336, 36));
@@ -92,40 +94,83 @@ public class mainHuff extends javax.swing.JFrame {
 
         tituloHuffman.setFont(new java.awt.Font("OCR A Extended", 1, 36)); // NOI18N
         tituloHuffman.setForeground(new java.awt.Color(218, 236, 255));
-        tituloHuffman.setText("Huffman");
+        tituloHuffman.setText("Hamming");
         tituloHuffman.setToolTipText("");
+
+        DescB1.setBackground(new java.awt.Color(0, 153, 153));
+        DescB1.setFont(new java.awt.Font("OCR A Extended", 0, 26)); // NOI18N
+        DescB1.setForeground(new java.awt.Color(255, 255, 255));
+        DescB1.setText("Introducir errores");
+        DescB1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        DescB1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        DescB1.setMaximumSize(new java.awt.Dimension(336, 36));
+        DescB1.setMinimumSize(new java.awt.Dimension(336, 36));
+        DescB1.setPreferredSize(new java.awt.Dimension(336, 36));
+        DescB1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                DescB1MouseClicked(evt);
+            }
+        });
+        DescB1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DescB1ActionPerformed(evt);
+            }
+        });
+
+        DescB2.setBackground(new java.awt.Color(0, 153, 153));
+        DescB2.setFont(new java.awt.Font("OCR A Extended", 0, 26)); // NOI18N
+        DescB2.setForeground(new java.awt.Color(255, 255, 255));
+        DescB2.setText("Desproteger archivo sin corregir");
+        DescB2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        DescB2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        DescB2.setMaximumSize(new java.awt.Dimension(336, 36));
+        DescB2.setMinimumSize(new java.awt.Dimension(336, 36));
+        DescB2.setPreferredSize(new java.awt.Dimension(336, 36));
+        DescB2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                DescB2MouseClicked(evt);
+            }
+        });
+        DescB2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DescB2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout menuPanelLayout = new javax.swing.GroupLayout(menuPanel);
         menuPanel.setLayout(menuPanelLayout);
         menuPanelLayout.setHorizontalGroup(
             menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, menuPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(CompactB, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53))
             .addGroup(menuPanelLayout.createSequentialGroup()
+                .addGap(143, 143, 143)
+                .addComponent(tituloHuffman)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(menuPanelLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(menuPanelLayout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(DescB, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(menuPanelLayout.createSequentialGroup()
-                        .addGap(145, 145, 145)
-                        .addComponent(tituloHuffman)))
-                .addContainerGap(39, Short.MAX_VALUE))
+                    .addComponent(DescB2, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
+                    .addComponent(CompactB, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(DescB, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(DescB1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         menuPanelLayout.setVerticalGroup(
             menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuPanelLayout.createSequentialGroup()
-                .addGap(68, 68, 68)
+                .addGap(47, 47, 47)
                 .addComponent(tituloHuffman, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(63, 63, 63)
+                .addGap(18, 18, 18)
                 .addComponent(CompactB, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(DescB, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(DescB2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(DescB1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29))
         );
 
-        jPanel2.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 40, 460, 370));
+        jPanel2.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 40, 460, 410));
 
         background.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, 40, 1070, 460));
 
@@ -161,7 +206,7 @@ public class mainHuff extends javax.swing.JFrame {
                 volverActionPerformed(evt);
             }
         });
-        background.add(volver, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 510, -1, -1));
+        background.add(volver, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 510, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -180,7 +225,7 @@ public class mainHuff extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CompactBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CompactBMouseClicked
-       
+
     }//GEN-LAST:event_CompactBMouseClicked
 
     private void CompactBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CompactBActionPerformed
@@ -191,7 +236,7 @@ public class mainHuff extends javax.swing.JFrame {
 
     private void DescBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DescBMouseClicked
         // TODO add your handling code here:
-       DescFrame c = new DescFrame();
+        DescFrame c = new DescFrame();
         c.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_DescBMouseClicked
@@ -204,6 +249,22 @@ public class mainHuff extends javax.swing.JFrame {
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_exitBActionPerformed
+
+    private void DescB1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DescB1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DescB1MouseClicked
+
+    private void DescB1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DescB1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DescB1ActionPerformed
+
+    private void DescB2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DescB2MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DescB2MouseClicked
+
+    private void DescB2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DescB2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DescB2ActionPerformed
 
     private void volverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_volverMouseClicked
         // TODO add your handling code here:
@@ -224,6 +285,8 @@ public class mainHuff extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CompactB;
     private javax.swing.JButton DescB;
+    private javax.swing.JButton DescB1;
+    private javax.swing.JButton DescB2;
     private javax.swing.JPanel background;
     private javax.swing.JButton exitB;
     private javax.swing.JLabel jLabel3;

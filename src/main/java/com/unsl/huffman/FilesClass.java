@@ -1,5 +1,5 @@
 
-package com.mycompany.huffmanm;
+package com.unsl.huffman;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;

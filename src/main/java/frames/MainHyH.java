@@ -6,14 +6,15 @@ package frames;
 
 /**
  *
- * @author Usuario
+ * @author mateo
  */
-public class mainHuff extends javax.swing.JFrame {
+public class MainHyH extends javax.swing.JFrame {
 
     /**
-     * Creates new form mainHuff
+     * Creates new form MainHyH
      */
-    public mainHuff() {
+    public MainHyH() {
+        setUndecorated(true);
         initComponents();
         this.setLocationRelativeTo(null);
     }
@@ -33,12 +34,12 @@ public class mainHuff extends javax.swing.JFrame {
         CompactB = new javax.swing.JButton();
         DescB = new javax.swing.JButton();
         tituloHuffman = new javax.swing.JLabel();
+        DescB2 = new javax.swing.JButton();
         exitB = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        volver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
 
         background.setBackground(new java.awt.Color(0, 102, 102));
         background.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -53,7 +54,7 @@ public class mainHuff extends javax.swing.JFrame {
         CompactB.setBackground(new java.awt.Color(0, 153, 153));
         CompactB.setFont(new java.awt.Font("OCR A Extended", 0, 26)); // NOI18N
         CompactB.setForeground(new java.awt.Color(255, 255, 255));
-        CompactB.setText("Compactar un archivo");
+        CompactB.setText("Hamming");
         CompactB.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         CompactB.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         CompactB.setMaximumSize(new java.awt.Dimension(336, 36));
@@ -73,7 +74,7 @@ public class mainHuff extends javax.swing.JFrame {
         DescB.setBackground(new java.awt.Color(0, 153, 153));
         DescB.setFont(new java.awt.Font("OCR A Extended", 0, 26)); // NOI18N
         DescB.setForeground(new java.awt.Color(255, 255, 255));
-        DescB.setText("Descompactar un archivo");
+        DescB.setText("Huffman");
         DescB.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         DescB.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         DescB.setMaximumSize(new java.awt.Dimension(336, 36));
@@ -90,42 +91,63 @@ public class mainHuff extends javax.swing.JFrame {
             }
         });
 
-        tituloHuffman.setFont(new java.awt.Font("OCR A Extended", 1, 36)); // NOI18N
+        tituloHuffman.setFont(new java.awt.Font("OCR A Extended", 1, 24)); // NOI18N
         tituloHuffman.setForeground(new java.awt.Color(218, 236, 255));
-        tituloHuffman.setText("Huffman");
+        tituloHuffman.setText("Hamming y Huffman");
         tituloHuffman.setToolTipText("");
+
+        DescB2.setBackground(new java.awt.Color(0, 153, 153));
+        DescB2.setFont(new java.awt.Font("OCR A Extended", 0, 26)); // NOI18N
+        DescB2.setForeground(new java.awt.Color(255, 255, 255));
+        DescB2.setText("Estadísticas");
+        DescB2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        DescB2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        DescB2.setMaximumSize(new java.awt.Dimension(336, 36));
+        DescB2.setMinimumSize(new java.awt.Dimension(336, 36));
+        DescB2.setPreferredSize(new java.awt.Dimension(336, 36));
+        DescB2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                DescB2MouseClicked(evt);
+            }
+        });
+        DescB2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DescB2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout menuPanelLayout = new javax.swing.GroupLayout(menuPanel);
         menuPanel.setLayout(menuPanelLayout);
         menuPanelLayout.setHorizontalGroup(
             menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, menuPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(CompactB, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53))
             .addGroup(menuPanelLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
                 .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(menuPanelLayout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(DescB, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(menuPanelLayout.createSequentialGroup()
-                        .addGap(145, 145, 145)
-                        .addComponent(tituloHuffman)))
-                .addContainerGap(39, Short.MAX_VALUE))
+                        .addComponent(tituloHuffman, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, menuPanelLayout.createSequentialGroup()
+                        .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(DescB2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 785, Short.MAX_VALUE)
+                            .addComponent(DescB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(CompactB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
         menuPanelLayout.setVerticalGroup(
             menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuPanelLayout.createSequentialGroup()
-                .addGap(68, 68, 68)
+                .addContainerGap()
                 .addComponent(tituloHuffman, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(63, 63, 63)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(CompactB, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(DescB, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(DescB2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(147, Short.MAX_VALUE))
         );
 
-        jPanel2.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 40, 460, 370));
+        jPanel2.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 830, 410));
 
         background.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, 40, 1070, 460));
 
@@ -142,26 +164,15 @@ public class mainHuff extends javax.swing.JFrame {
         });
         background.add(exitB, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 510, 90, 30));
 
+        jLabel2.setFont(new java.awt.Font("OCR A Extended", 2, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Villalva Mateo y Valdeon Valentin");
+        background.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 510, 490, 40));
+
         jLabel3.setFont(new java.awt.Font("OCR A Extended", 0, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(204, 204, 204));
         jLabel3.setText("Tecnologia de la Informacion y la Comunicacion");
         background.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 510, -1));
-
-        volver.setBackground(new java.awt.Color(0, 102, 102));
-        volver.setFont(new java.awt.Font("OCR A Extended", 2, 20)); // NOI18N
-        volver.setForeground(new java.awt.Color(255, 255, 255));
-        volver.setText("VOLVER");
-        volver.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                volverMouseClicked(evt);
-            }
-        });
-        volver.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                volverActionPerformed(evt);
-            }
-        });
-        background.add(volver, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 510, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -180,18 +191,18 @@ public class mainHuff extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CompactBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CompactBMouseClicked
-       
+
     }//GEN-LAST:event_CompactBMouseClicked
 
     private void CompactBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CompactBActionPerformed
-        CompactFrame c = new CompactFrame();
+        MainHamming c = new MainHamming();
         c.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_CompactBActionPerformed
 
     private void DescBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DescBMouseClicked
         // TODO add your handling code here:
-       DescFrame c = new DescFrame();
+        mainHuff c = new mainHuff();
         c.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_DescBMouseClicked
@@ -200,36 +211,64 @@ public class mainHuff extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_DescBActionPerformed
 
+    private void DescB2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DescB2MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DescB2MouseClicked
+
+    private void DescB2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DescB2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DescB2ActionPerformed
+
     private void exitBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBActionPerformed
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_exitBActionPerformed
 
-    private void volverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_volverMouseClicked
-        // TODO add your handling code here:
-        MainHyH m = new MainHyH();
-        this.dispose();
-        m.setVisible(true);
-    }//GEN-LAST:event_volverMouseClicked
-
-    private void volverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_volverActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_volverActionPerformed
-
     /**
      * @param args the command line arguments
      */
-    
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(MainHyH.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(MainHyH.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(MainHyH.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MainHyH.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new MainHyH().setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CompactB;
     private javax.swing.JButton DescB;
+    private javax.swing.JButton DescB2;
     private javax.swing.JPanel background;
     private javax.swing.JButton exitB;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel menuPanel;
     private javax.swing.JLabel tituloHuffman;
-    private javax.swing.JButton volver;
     // End of variables declaration//GEN-END:variables
 }

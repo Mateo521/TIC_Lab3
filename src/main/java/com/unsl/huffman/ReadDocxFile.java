@@ -1,4 +1,4 @@
-package com.mycompany.huffmanm;
+package com.unsl.huffman;
 
 
 import java.io.*;

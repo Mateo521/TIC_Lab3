@@ -53,5 +53,5 @@
 		    <version>RELEASE160</version>
 		  </dependency>
 		</dependencies>
-    <name>Huffman-Villalva-Valdeon</name>
+    <name>Hamming-Huffman-Villalva-Valdeon</name>
 </project>

@@ -5,7 +5,7 @@
 package frames;
 
 import javax.swing.JOptionPane;
-import com.mycompany.huffmanm.Codificar;
+import com.unsl.huffman.Codificar;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -88,7 +88,7 @@ public static Codificar compact = new Codificar();
         compactarB.setForeground(new java.awt.Color(255, 255, 255));
         compactarB.setText("COMPACTAR");
         compactarB.setBorder(null);
-        compactarB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        compactarB.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         compactarB.setMaximumSize(new java.awt.Dimension(336, 36));
         compactarB.setMinimumSize(new java.awt.Dimension(336, 36));
         compactarB.setPreferredSize(new java.awt.Dimension(336, 36));
@@ -128,7 +128,7 @@ public static Codificar compact = new Codificar();
 
         jButton1.setFont(new java.awt.Font("OCR A Extended", 0, 18)); // NOI18N
         jButton1.setText("Seleccionar archivo \".txt\"");
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -183,7 +183,7 @@ public static Codificar compact = new Codificar();
         });
         jPanel2.add(estadisticas, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 360, 190, 30));
 
-        background1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 1030, 410));
+        background1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 980, 410));
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 102));
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -337,37 +337,9 @@ public static Codificar compact = new Codificar();
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CompactFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CompactFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CompactFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CompactFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CompactFrame().setVisible(true);
-            }
-        });
-    }
+    
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea ANTES;

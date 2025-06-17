@@ -1,9 +1,9 @@
 
-package com.mycompany.huffmanm;
-import static com.mycompany.huffmanm.FilesClass.archivoCodificado;
-import static com.mycompany.huffmanm.FilesClass.getExtensionFiles;
-import static com.mycompany.huffmanm.FilesClass.obtenerNombre;
-import static com.mycompany.huffmanm.FilesClass.setArchivoCodificado;
+package com.unsl.huffman;
+import static com.unsl.huffman.FilesClass.archivoCodificado;
+import static com.unsl.huffman.FilesClass.getExtensionFiles;
+import static com.unsl.huffman.FilesClass.obtenerNombre;
+import static com.unsl.huffman.FilesClass.setArchivoCodificado;
 import java.io.*;
 import java.util.*;
 import javax.swing.JFileChooser;
