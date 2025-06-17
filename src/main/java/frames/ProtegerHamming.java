@@ -4,24 +4,33 @@
  */
 package frames;
 
+import static frames.CompactFrame.compact;
 import javax.swing.JOptionPane;
-import com.unsl.huffman.Codificar;
+import com.unsl.hamming.Hamming;
+import static com.unsl.hamming.Hamming.guardarArchivoCodificado;
+import static com.unsl.hamming.Hamming.procesoEnBloques;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTextArea;
 
 /**
  *
- * @author Usuario
+ * @author mateo
  */
-public class CompactFrame extends javax.swing.JFrame {
-public static Codificar compact = new Codificar();
+public class ProtegerHamming extends javax.swing.JFrame {
+
     /**
-     * Creates new form CompactFrame
+     * Creates new form ProtegerHamming
      */
-    public CompactFrame() {
+    public ProtegerHamming() {
+          setUndecorated(true);
         initComponents();
         this.setLocationRelativeTo(null);
     }
@@ -39,7 +48,7 @@ public static Codificar compact = new Codificar();
         volver = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        compactarB = new javax.swing.JButton();
+        protegerH = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         ruta_antes = new javax.swing.JTextField();
@@ -55,7 +64,6 @@ public static Codificar compact = new Codificar();
         tituloHuffman = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
 
         background1.setBackground(new java.awt.Color(0, 102, 102));
         background1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -83,23 +91,23 @@ public static Codificar compact = new Codificar();
         jPanel5.setBackground(new java.awt.Color(0, 102, 102));
         jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        compactarB.setBackground(new java.awt.Color(0, 102, 102));
-        compactarB.setFont(new java.awt.Font("OCR A Extended", 0, 26)); // NOI18N
-        compactarB.setForeground(new java.awt.Color(255, 255, 255));
-        compactarB.setText("Compactar");
-        compactarB.setBorder(null);
-        compactarB.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        compactarB.setMaximumSize(new java.awt.Dimension(336, 36));
-        compactarB.setMinimumSize(new java.awt.Dimension(336, 36));
-        compactarB.setPreferredSize(new java.awt.Dimension(336, 36));
-        compactarB.addMouseListener(new java.awt.event.MouseAdapter() {
+        protegerH.setBackground(new java.awt.Color(0, 102, 102));
+        protegerH.setFont(new java.awt.Font("OCR A Extended", 0, 26)); // NOI18N
+        protegerH.setForeground(new java.awt.Color(255, 255, 255));
+        protegerH.setText("Proteger");
+        protegerH.setBorder(null);
+        protegerH.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        protegerH.setMaximumSize(new java.awt.Dimension(336, 36));
+        protegerH.setMinimumSize(new java.awt.Dimension(336, 36));
+        protegerH.setPreferredSize(new java.awt.Dimension(336, 36));
+        protegerH.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                compactarBMouseClicked(evt);
+                protegerHMouseClicked(evt);
             }
         });
-        compactarB.addActionListener(new java.awt.event.ActionListener() {
+        protegerH.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                compactarBActionPerformed(evt);
+                protegerHActionPerformed(evt);
             }
         });
 
@@ -109,14 +117,14 @@ public static Codificar compact = new Codificar();
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(compactarB, javax.swing.GroupLayout.PREFERRED_SIZE, 194, Short.MAX_VALUE)
+                .addComponent(protegerH, javax.swing.GroupLayout.PREFERRED_SIZE, 194, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(compactarB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(protegerH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -230,9 +238,9 @@ public static Codificar compact = new Codificar();
         tituloHuffman.setBackground(new java.awt.Color(0, 102, 102));
         tituloHuffman.setFont(new java.awt.Font("OCR A Extended", 1, 36)); // NOI18N
         tituloHuffman.setForeground(new java.awt.Color(255, 255, 255));
-        tituloHuffman.setText("COMPACTAR");
+        tituloHuffman.setText("Proteger");
         tituloHuffman.setToolTipText("");
-        background1.add(tituloHuffman, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 250, -1));
+        background1.add(tituloHuffman, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 160, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -250,11 +258,6 @@ public static Codificar compact = new Codificar();
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void exitB1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitB1ActionPerformed
-        // TODO add your handling code here:
-        System.exit(0);
-    }//GEN-LAST:event_exitB1ActionPerformed
-
     private void volverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_volverMouseClicked
         // TODO add your handling code here:
         mainHuff m = new mainHuff();
@@ -266,86 +269,153 @@ public static Codificar compact = new Codificar();
         // TODO add your handling code here:
     }//GEN-LAST:event_volverActionPerformed
 
-    private void compactarBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_compactarBMouseClicked
+    private void protegerHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_protegerHMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_compactarBMouseClicked
+    }//GEN-LAST:event_protegerHMouseClicked
 
-    private void compactarBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compactarBActionPerformed
+    private void protegerHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_protegerHActionPerformed
+  
+     if(ruta_antes.getText().isEmpty()){
+        JOptionPane.showMessageDialog(null, "Debe seleccionar un archivo", "Error", JOptionPane.ERROR_MESSAGE);
+    } else {
+        Object[] opciones = {"8 bits (.HA1)", "256 bits (.HA2)", "4096 bits (.HA3)"};
+        int seleccion = JOptionPane.showOptionDialog(
+            null,
+            "Seleccione el tamaño de bloque para Hamming:",
+            "Configuración de Bloque",
+            JOptionPane.DEFAULT_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            opciones,
+            opciones[0]
+        );
+
+        if (seleccion >= 0) {
+            // Ejecuta protección Hamming con el archivo cargado
+            protegerConHamming(ruta_antes.getText(), seleccion + 1, DESPUES);
+        }
+    }
+
+    }//GEN-LAST:event_protegerHActionPerformed
+
+    public void protegerConHamming(String inputPath, int opcionBloque, JTextArea resultadoArea) {
+    int bloqueTamanio;
+    String extension;
+
+    switch (opcionBloque) {
+        case 1: bloqueTamanio = 8; extension = ".HA1"; break;
+        case 2: bloqueTamanio = 256; extension = ".HA2"; break;
+        case 3: bloqueTamanio = 4096; extension = ".HA3"; break;
+        default:
+            JOptionPane.showMessageDialog(null, "Opción de bloque inválida.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+    }
+
+    try {
+        String contenido = new String(Files.readAllBytes(Paths.get(inputPath)));
+        String outputPath = inputPath.replace(".txt", extension);
+
+        List<List<Integer>> BloqueCodificado = procesoEnBloques(contenido, bloqueTamanio);
+        guardarArchivoCodificado(BloqueCodificado, outputPath);
+
+        // Mostrar mensaje de éxito
+        JOptionPane.showMessageDialog(
+            null,
+            "El archivo fue protegido y guardado en: " + outputPath,
+            "Protección exitosa",
+            JOptionPane.INFORMATION_MESSAGE
+        );
+
+        // Mostrar en el área de texto
+        StringBuilder resultado = new StringBuilder();
+        for (List<Integer> bloque : BloqueCodificado) {
+            for (Integer bit : bloque) {
+                resultado.append(bit);
+            }
+            resultado.append("\n");
+        }
+        resultadoArea.setText(resultado.toString());
+        estadisticas.setEnabled(true);
+
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(null, "Error al proteger el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+    
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if(ruta_antes.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Debe seleccionar un archivo","Error", JOptionPane.ERROR_MESSAGE);
-            }else{
-            
-           JOptionPane.showMessageDialog(
-                null,
-                "\nEl archivo fue compactado y almacenado en la dirección: " + compact.getArchivoCodificado(),
-                "Compactación exitosa",
-                JOptionPane.INFORMATION_MESSAGE
-            );
-            
+        compact.setArchivoEntrada("");
+        compact.SelectArchivo();
+        if(!compact.getArchivoEntrada().equals("")){
+            ruta_antes.setText(compact.getArchivoEntrada()); //escribe la ruta del archivo
             try {
-                compact.compactar();
-                FileReader fr= new FileReader(compact.getArchivoCodificado());
-                BufferedReader br = new BufferedReader(fr);
-                String texto="";
-                String linea="";
-                while(((linea=br.readLine())!=null)){
-                    texto+=linea+"\n";
-                }
-                DESPUES.setText(texto);
-                  estadisticas.setEnabled(true);
+                ANTES.setText(compact.abrirMensajeOriginal());
+
             } catch (IOException ex) {
                 Logger.getLogger(CompactFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
-            
-
-               
-    }//GEN-LAST:event_compactarBActionPerformed
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void ruta_antesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ruta_antesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ruta_antesActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        compact.setArchivoEntrada("");
-        compact.SelectArchivo();
-          if(!compact.getArchivoEntrada().equals("")){
-             ruta_antes.setText(compact.getArchivoEntrada()); //escribe la ruta del archivo
-            try {
-                ANTES.setText(compact.abrirMensajeOriginal());
-             
-            } catch (IOException ex) {
-                Logger.getLogger(CompactFrame.class.getName()).log(Level.SEVERE, null, ex);
-            } 
-    }
-        
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void estadisticasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estadisticasActionPerformed
         // TODO add your handling code here:
-        
+
         JOptionPane.showMessageDialog(null, "\n"
-                    + "- Tamaño del archivo original: " + compact.tamanioOriginal() + " Bytes\n"
-                    + "- Tamaño del archivo ya compactado: " + compact.tamanioCodificado() + " Bytes\n"
-                    ,"ETADÍSTICAS OBTENIDAS", JOptionPane.INFORMATION_MESSAGE);
+            + "- Tamaño del archivo original: " + compact.tamanioOriginal() + " Bytes\n"
+            + "- Tamaño del archivo ya compactado: " + compact.tamanioCodificado() + " Bytes\n"
+            ,"ETADÍSTICAS OBTENIDAS", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_estadisticasActionPerformed
+
+    private void exitB1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitB1ActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_exitB1ActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    
-    
-    
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(ProtegerHamming.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(ProtegerHamming.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(ProtegerHamming.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(ProtegerHamming.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new ProtegerHamming().setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea ANTES;
     private javax.swing.JTextArea DESPUES;
     private javax.swing.JPanel background1;
-    private javax.swing.JButton compactarB;
     private javax.swing.JButton estadisticas;
     private javax.swing.JButton exitB1;
     private javax.swing.JButton jButton1;
@@ -357,6 +427,7 @@ public static Codificar compact = new Codificar();
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jSantes;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton protegerH;
     private javax.swing.JTextField ruta_antes;
     private javax.swing.JLabel tituloHuffman;
     private javax.swing.JButton volver;

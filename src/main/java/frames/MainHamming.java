@@ -229,7 +229,7 @@ public class MainHamming extends javax.swing.JFrame {
     }//GEN-LAST:event_CompactBMouseClicked
 
     private void CompactBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CompactBActionPerformed
-        CompactFrame c = new CompactFrame();
+        ProtegerHamming c = new ProtegerHamming();
         c.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_CompactBActionPerformed

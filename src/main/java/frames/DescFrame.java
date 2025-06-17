@@ -64,7 +64,7 @@ public static Decodificar descompactar = new Decodificar();
         volver.setFont(new java.awt.Font("OCR A Extended", 2, 20)); // NOI18N
         volver.setForeground(new java.awt.Color(255, 255, 255));
         volver.setText("VOLVER");
-        volver.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        volver.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         volver.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 volverMouseClicked(evt);
@@ -85,9 +85,9 @@ public static Decodificar descompactar = new Decodificar();
         jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         compactarB.setBackground(new java.awt.Color(0, 102, 102));
-        compactarB.setFont(new java.awt.Font("OCR A Extended", 0, 24)); // NOI18N
+        compactarB.setFont(new java.awt.Font("OCR A Extended", 0, 18)); // NOI18N
         compactarB.setForeground(new java.awt.Color(255, 255, 255));
-        compactarB.setText("DESCOMPACTAR");
+        compactarB.setText("Descompactar");
         compactarB.setBorder(null);
         compactarB.setMaximumSize(new java.awt.Dimension(336, 36));
         compactarB.setMinimumSize(new java.awt.Dimension(336, 36));
@@ -128,7 +128,7 @@ public static Decodificar descompactar = new Decodificar();
 
         jButton2.setFont(new java.awt.Font("OCR A Extended", 0, 18)); // NOI18N
         jButton2.setText("Seleccionar archivo \".huf\"");
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -219,7 +219,7 @@ public static Decodificar descompactar = new Decodificar();
         exitB1.setFont(new java.awt.Font("OCR A Extended", 2, 20)); // NOI18N
         exitB1.setForeground(new java.awt.Color(255, 255, 255));
         exitB1.setText("SALIR");
-        exitB1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        exitB1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         exitB1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitB1ActionPerformed(evt);
@@ -228,11 +228,11 @@ public static Decodificar descompactar = new Decodificar();
         background1.add(exitB1, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 520, 90, 30));
 
         tituloHuffman.setBackground(new java.awt.Color(0, 102, 102));
-        tituloHuffman.setFont(new java.awt.Font("OCR A Extended", 1, 60)); // NOI18N
+        tituloHuffman.setFont(new java.awt.Font("OCR A Extended", 1, 36)); // NOI18N
         tituloHuffman.setForeground(new java.awt.Color(255, 255, 255));
         tituloHuffman.setText("DESCOMPACTAR");
         tituloHuffman.setToolTipText("");
-        background1.add(tituloHuffman, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 460, -1));
+        background1.add(tituloHuffman, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 320, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

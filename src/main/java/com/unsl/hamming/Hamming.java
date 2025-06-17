@@ -21,7 +21,7 @@ import java.util.Scanner;
 public class Hamming {
 
     // Calcula el número de bits de paridad necesarios para un número de bits de datos dado
-    public static int calcularParidadBitsHamming(int dataBits) { 
+    public static int calcularParidadBitsHamming(int dataBits) { /* BIT GLOBAL AÑADIR */
         int m = 1;
         while (Math.pow(2, m) < dataBits + m + 1) {
             m++;
@@ -420,6 +420,12 @@ public static List<List<Integer>> cargarArchivoCodificado(String filePath) throw
         System.out.println("Error al procesar el archivo: " + e.getMessage());
     }
 }
+   
+   
+   
+   
+   
+   
 
 
     public static void introducirErrores(Scanner scanner) {
