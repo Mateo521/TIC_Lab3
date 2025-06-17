@@ -135,7 +135,7 @@ public static int calcularParidadHamming(List<Integer> data, int position) {
     return parity;
 }
 
-private static int calcularParidadGlobal(List<Integer> block) {
+public static int calcularParidadGlobal(List<Integer> block) {
     int count = 0;
     for (int bit : block) {
         if (bit == 1) count++;

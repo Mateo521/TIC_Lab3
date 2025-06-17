@@ -35,7 +35,6 @@ public class MainHamming extends javax.swing.JFrame {
         DescB = new javax.swing.JButton();
         tituloHuffman = new javax.swing.JLabel();
         DescB1 = new javax.swing.JButton();
-        DescB2 = new javax.swing.JButton();
         exitB = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         volver = new javax.swing.JButton();
@@ -75,7 +74,7 @@ public class MainHamming extends javax.swing.JFrame {
         DescB.setBackground(new java.awt.Color(0, 153, 153));
         DescB.setFont(new java.awt.Font("OCR A Extended", 0, 26)); // NOI18N
         DescB.setForeground(new java.awt.Color(255, 255, 255));
-        DescB.setText("Desproteger archivo corrigiendo");
+        DescB.setText("Desproteger un archivo");
         DescB.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         DescB.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         DescB.setMaximumSize(new java.awt.Dimension(336, 36));
@@ -117,26 +116,6 @@ public class MainHamming extends javax.swing.JFrame {
             }
         });
 
-        DescB2.setBackground(new java.awt.Color(0, 153, 153));
-        DescB2.setFont(new java.awt.Font("OCR A Extended", 0, 26)); // NOI18N
-        DescB2.setForeground(new java.awt.Color(255, 255, 255));
-        DescB2.setText("Desproteger archivo sin corregir");
-        DescB2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        DescB2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        DescB2.setMaximumSize(new java.awt.Dimension(336, 36));
-        DescB2.setMinimumSize(new java.awt.Dimension(336, 36));
-        DescB2.setPreferredSize(new java.awt.Dimension(336, 36));
-        DescB2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                DescB2MouseClicked(evt);
-            }
-        });
-        DescB2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DescB2ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout menuPanelLayout = new javax.swing.GroupLayout(menuPanel);
         menuPanel.setLayout(menuPanelLayout);
         menuPanelLayout.setHorizontalGroup(
@@ -148,8 +127,7 @@ public class MainHamming extends javax.swing.JFrame {
             .addGroup(menuPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(DescB2, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
-                    .addComponent(CompactB, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(CompactB, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
                     .addComponent(DescB, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(DescB1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -163,11 +141,9 @@ public class MainHamming extends javax.swing.JFrame {
                 .addComponent(CompactB, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(DescB, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(DescB2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(DescB1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
+                .addContainerGap(94, Short.MAX_VALUE))
         );
 
         jPanel2.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 40, 460, 410));
@@ -242,7 +218,9 @@ public class MainHamming extends javax.swing.JFrame {
     }//GEN-LAST:event_DescBMouseClicked
 
     private void DescBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DescBActionPerformed
-        // TODO add your handling code here:
+      DesprotegerHamming c = new DesprotegerHamming();
+        c.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_DescBActionPerformed
 
     private void exitBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBActionPerformed
@@ -257,14 +235,6 @@ public class MainHamming extends javax.swing.JFrame {
     private void DescB1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DescB1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_DescB1ActionPerformed
-
-    private void DescB2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DescB2MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_DescB2MouseClicked
-
-    private void DescB2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DescB2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_DescB2ActionPerformed
 
     private void volverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_volverMouseClicked
         // TODO add your handling code here:
@@ -286,7 +256,6 @@ public class MainHamming extends javax.swing.JFrame {
     private javax.swing.JButton CompactB;
     private javax.swing.JButton DescB;
     private javax.swing.JButton DescB1;
-    private javax.swing.JButton DescB2;
     private javax.swing.JPanel background;
     private javax.swing.JButton exitB;
     private javax.swing.JLabel jLabel3;
