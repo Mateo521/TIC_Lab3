@@ -8,7 +8,10 @@ import static frames.CompactFrame.compact;
 import javax.swing.JOptionPane;
 import com.unsl.hamming.Hamming;
 import static com.unsl.hamming.Hamming.guardarArchivoCodificado;
+import static com.unsl.hamming.Hamming.introducirDosErroresPorBloque;
+import static com.unsl.hamming.Hamming.introducirUnErrorPorBloque;
 import static com.unsl.hamming.Hamming.procesoEnBloques;
+import com.unsl.huffman.Codificar;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -30,7 +33,7 @@ public class ProtegerHamming extends javax.swing.JFrame {
      * Creates new form ProtegerHamming
      */
     public ProtegerHamming() {
-          setUndecorated(true);
+        setUndecorated(true);
         initComponents();
         this.setLocationRelativeTo(null);
     }
@@ -56,12 +59,12 @@ public class ProtegerHamming extends javax.swing.JFrame {
         ANTES = new javax.swing.JTextArea();
         jScrollPane1 = new javax.swing.JScrollPane();
         DESPUES = new javax.swing.JTextArea();
-        estadisticas = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         exitB1 = new javax.swing.JButton();
         tituloHuffman = new javax.swing.JLabel();
+        estadisticas = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -135,7 +138,7 @@ public class ProtegerHamming extends javax.swing.JFrame {
         jPanel6.setLayout(null);
 
         jButton1.setFont(new java.awt.Font("OCR A Extended", 0, 18)); // NOI18N
-        jButton1.setText("Seleccionar archivo \".txt\"");
+        jButton1.setText("Seleccionar archivo \".txt\" , \".docx\", \".huf\"");
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -178,19 +181,6 @@ public class ProtegerHamming extends javax.swing.JFrame {
 
         jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 70, 350, 330));
 
-        estadisticas.setBackground(new java.awt.Color(204, 204, 204));
-        estadisticas.setFont(new java.awt.Font("OCR A Extended", 0, 18)); // NOI18N
-        estadisticas.setForeground(new java.awt.Color(43, 183, 246));
-        estadisticas.setText("VER ESTADÍSTICAS");
-        estadisticas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(43, 183, 246)));
-        estadisticas.setEnabled(false);
-        estadisticas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                estadisticasActionPerformed(evt);
-            }
-        });
-        jPanel2.add(estadisticas, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 360, 190, 30));
-
         background1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 980, 410));
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 102));
@@ -198,7 +188,7 @@ public class ProtegerHamming extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("OCR A Extended", 0, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel3.setText("Tecnologia de la Informacion y la Comunicacion");
+        jLabel3.setText("Teoría de la Informacion y la Comunicacion");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -242,6 +232,19 @@ public class ProtegerHamming extends javax.swing.JFrame {
         tituloHuffman.setToolTipText("");
         background1.add(tituloHuffman, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 160, -1));
 
+        estadisticas.setBackground(new java.awt.Color(204, 204, 204));
+        estadisticas.setFont(new java.awt.Font("OCR A Extended", 0, 18)); // NOI18N
+        estadisticas.setForeground(new java.awt.Color(43, 183, 246));
+        estadisticas.setText("VER ESTADÍSTICAS");
+        estadisticas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(43, 183, 246)));
+        estadisticas.setEnabled(false);
+        estadisticas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                estadisticasActionPerformed(evt);
+            }
+        });
+        background1.add(estadisticas, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 520, 190, 30));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -260,7 +263,7 @@ public class ProtegerHamming extends javax.swing.JFrame {
 
     private void volverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_volverMouseClicked
         // TODO add your handling code here:
-        mainHuff m = new mainHuff();
+        MainHamming m = new MainHamming();
         this.dispose();
         m.setVisible(true);
     }//GEN-LAST:event_volverMouseClicked
@@ -274,61 +277,139 @@ public class ProtegerHamming extends javax.swing.JFrame {
     }//GEN-LAST:event_protegerHMouseClicked
 
     private void protegerHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_protegerHActionPerformed
-  
-     if(ruta_antes.getText().isEmpty()){
-        JOptionPane.showMessageDialog(null, "Debe seleccionar un archivo", "Error", JOptionPane.ERROR_MESSAGE);
-    } else {
-        Object[] opciones = {"8 bits (.HA1)", "256 bits (.HA2)", "4096 bits (.HA3)"};
-        int seleccion = JOptionPane.showOptionDialog(
-            null,
-            "Seleccione el tamaño de bloque para Hamming:",
-            "Configuración de Bloque",
-            JOptionPane.DEFAULT_OPTION,
-            JOptionPane.QUESTION_MESSAGE,
-            null,
-            opciones,
-            opciones[0]
-        );
 
-        if (seleccion >= 0) {
-            // Ejecuta protección Hamming con el archivo cargado
-            protegerConHamming(ruta_antes.getText(), seleccion + 1, DESPUES);
+        if (ruta_antes.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un archivo", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            Object[] opciones = {"8 bits (.HA1)", "256 bits (.HA2)", "4096 bits (.HA3)"};
+            int seleccion = JOptionPane.showOptionDialog(
+                    null,
+                    "Seleccione el tamaño de bloque para Hamming:",
+                    "Configuración de Bloque",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    opciones,
+                    opciones[0]
+            );
+
+            if (seleccion >= 0) {
+                // Ejecuta protección Hamming con el archivo cargado
+                protegerConHamming(ruta_antes.getText(), seleccion + 1, DESPUES);
+            }
         }
-    }
 
     }//GEN-LAST:event_protegerHActionPerformed
 
     public void protegerConHamming(String inputPath, int opcionBloque, JTextArea resultadoArea) {
+   
+          if (ruta_antes.getText().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Debe seleccionar un archivo", "Error", JOptionPane.ERROR_MESSAGE);
+    } else {
+        // First choose block size
+        Object[] opcionesBloque = {"8 bits (.HA1)", "256 bits (.HA2)", "4096 bits (.HA3)"};
+        int seleccionBloque = JOptionPane.showOptionDialog(
+                null,
+                "Seleccione el tamaño de bloque para Hamming:",
+                "Configuración de Bloque",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opcionesBloque,
+                opcionesBloque[0]
+        );
+        
+        if (seleccionBloque >= 0) {
+            // Then choose error option
+            Object[] opcionesError = {"Sin errores", "1 Error por bloque", "2 Errores por bloque"};
+            int seleccionError = JOptionPane.showOptionDialog(
+                    null,
+                    "¿Desea introducir errores en el archivo protegido?",
+                    "Introducción de Errores",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    opcionesError,
+                    opcionesError[0]
+            );
+            
+            if (seleccionError >= 0) {
+                // Execute Hamming protection with the selected options
+                protegerConHamming(ruta_antes.getText(), seleccionBloque + 1, seleccionError, DESPUES);
+            }
+        }
+    }
+}                                         
+
+public void protegerConHamming(String inputPath, int opcionBloque, int opcionError, JTextArea resultadoArea) {
     int bloqueTamanio;
     String extension;
-
+    
+    // Determine block size
     switch (opcionBloque) {
-        case 1: bloqueTamanio = 8; extension = ".HA1"; break;
-        case 2: bloqueTamanio = 256; extension = ".HA2"; break;
-        case 3: bloqueTamanio = 4096; extension = ".HA3"; break;
+        case 1:
+            bloqueTamanio = 8;
+            extension = ".HA1";
+            break;
+        case 2:
+            bloqueTamanio = 256;
+            extension = ".HA2";
+            break;
+        case 3:
+            bloqueTamanio = 4096;
+            extension = ".HA3";
+            break;
         default:
             JOptionPane.showMessageDialog(null, "Opción de bloque inválida.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
     }
-
+    
     try {
+        // Read input file
         String contenido = new String(Files.readAllBytes(Paths.get(inputPath)));
-        String outputPath = inputPath.replace(".txt", extension);
-
-        List<List<Integer>> BloqueCodificado = procesoEnBloques(contenido, bloqueTamanio);
-        guardarArchivoCodificado(BloqueCodificado, outputPath);
-
-        // Mostrar mensaje de éxito
+        
+        // Get base name without extension
+        String baseName = inputPath;
+        if (inputPath.endsWith(".txt") || inputPath.endsWith(".docx") || inputPath.endsWith(".huf")) {
+            baseName = inputPath.substring(0, inputPath.lastIndexOf('.'));
+        }
+        
+        // Process blocks
+        List<List<Integer>> bloquesCodificados = procesoEnBloques(contenido, bloqueTamanio);
+        
+        // Apply errors if requested
+        switch (opcionError) {
+            case 1:
+                introducirUnErrorPorBloque(bloquesCodificados);
+                extension = extension.replace("HA", "HE"); // Change extension for error files
+                break;
+            case 2:
+                introducirDosErroresPorBloque(bloquesCodificados);
+                extension = extension.replace("HA", "HE"); // Change extension for error files
+                break;
+        }
+        
+        // Save output file
+        String outputPath = baseName + extension;
+        guardarArchivoCodificado(bloquesCodificados, outputPath);
+        
+        // Show success message
+        String message = "El archivo fue protegido";
+        if (opcionError > 0) {
+            message += " y se introdujeron " + opcionError + (opcionError == 1 ? " error" : " errores") + " por bloque";
+        }
+        message += ".\nGuardado en: " + outputPath;
+        
         JOptionPane.showMessageDialog(
-            null,
-            "El archivo fue protegido y guardado en: " + outputPath,
-            "Protección exitosa",
-            JOptionPane.INFORMATION_MESSAGE
+                null,
+                message,
+                "Operación exitosa",
+                JOptionPane.INFORMATION_MESSAGE
         );
-
-        // Mostrar en el área de texto
+        
+        // Display in text area
         StringBuilder resultado = new StringBuilder();
-        for (List<Integer> bloque : BloqueCodificado) {
+        for (List<Integer> bloque : bloquesCodificados) {
             for (Integer bit : bloque) {
                 resultado.append(bit);
             }
@@ -336,22 +417,46 @@ public class ProtegerHamming extends javax.swing.JFrame {
         }
         resultadoArea.setText(resultado.toString());
         estadisticas.setEnabled(true);
-
+        
     } catch (IOException e) {
-        JOptionPane.showMessageDialog(null, "Error al proteger el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Error al procesar el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
-}
+    }
 
     
+    private int promptForErrorCount() {
+    Object[] options = {"Sin errores", "1 Error", "2 Errores"};
+    int response = JOptionPane.showOptionDialog(
+        null,
+        "Seleccione cuantos errores desea ingresar:",
+        "Introducir errores",
+        JOptionPane.DEFAULT_OPTION,
+        JOptionPane.QUESTION_MESSAGE,
+        null,
+        options,
+        options[0]
+    );
+    
+    // Convert the response to number of errors
+    return response; // 0 = none, 1 = 1 error, 2 = 2 errors
+}
+
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        compact.setArchivoEntrada("");
-        compact.SelectArchivo();
-        if(!compact.getArchivoEntrada().equals("")){
-            ruta_antes.setText(compact.getArchivoEntrada()); //escribe la ruta del archivo
-            try {
-                ANTES.setText(compact.abrirMensajeOriginal());
+        Codificar.setArchivoEntrada("");
+        Codificar.seleccionarArchivoConFiltro(
+                new String[]{"txt", "docx", "huf"},
+                "Archivos .txt, .docx o .huf",
+                ruta_antes,
+                ANTES
+        );
 
+        if (!Codificar.getArchivoEntrada().isEmpty()) {
+            ruta_antes.setText(Codificar.getArchivoEntrada());
+
+            try {
+                ANTES.setText(Codificar.abrirMensajeOriginal());
             } catch (IOException ex) {
                 Logger.getLogger(CompactFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -367,9 +472,9 @@ public class ProtegerHamming extends javax.swing.JFrame {
         // TODO add your handling code here:
 
         JOptionPane.showMessageDialog(null, "\n"
-            + "- Tamaño del archivo original: " + compact.tamanioOriginal() + " Bytes\n"
-            + "- Tamaño del archivo ya compactado: " + compact.tamanioCodificado() + " Bytes\n"
-            ,"ETADÍSTICAS OBTENIDAS", JOptionPane.INFORMATION_MESSAGE);
+                + "- Tamaño del archivo original: " + compact.tamanioOriginal() + " Bytes\n"
+                + "- Tamaño del archivo ya compactado: " + compact.tamanioCodificado() + " Bytes\n",
+                 "ETADÍSTICAS OBTENIDAS", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_estadisticasActionPerformed
 
     private void exitB1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitB1ActionPerformed

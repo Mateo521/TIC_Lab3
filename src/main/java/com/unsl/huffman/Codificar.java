@@ -5,9 +5,13 @@ import static com.unsl.huffman.FilesClass.getExtensionFiles;
 import static com.unsl.huffman.FilesClass.setArchivoCodificado;
 import static com.unsl.huffman.FilesClass.setArchivoEntrada;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Codificar extends FilesClass {
@@ -53,6 +57,35 @@ public class Codificar extends FilesClass {
         }
 
     }
+    
+    
+    public static void seleccionarArchivoConFiltro(String[] extensionesPermitidas, String descripcion, JTextField rutaField, JTextArea vistaPrevia) {
+    JFileChooser jf = new JFileChooser();
+    FileNameExtensionFilter filtro = new FileNameExtensionFilter(descripcion, extensionesPermitidas);
+    jf.setFileFilter(filtro);
+    
+    int select = jf.showOpenDialog(jf);
+    if (select == JFileChooser.APPROVE_OPTION) {
+        String ruta = jf.getSelectedFile().getAbsolutePath();
+        String extension = Codificar.getExtensionFiles(ruta); // puedes mover esta función si quieres desacoplar más
+
+        boolean permitido = Arrays.stream(extensionesPermitidas).anyMatch(ext -> extension.equalsIgnoreCase(ext));
+        if (!permitido) {
+            JOptionPane.showMessageDialog(null, "Archivo inválido", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        rutaField.setText(ruta);
+
+        try {
+            String contenido = new String(Files.readAllBytes(Paths.get(ruta)));
+            vistaPrevia.setText(contenido);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al leer el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+}
+
 
     //COMPACTA EL ARCHIVO
     public static void codificacion(String mensaje, long size) throws IOException {

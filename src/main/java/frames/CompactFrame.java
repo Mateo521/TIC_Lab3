@@ -190,7 +190,7 @@ public static Codificar compact = new Codificar();
 
         jLabel3.setFont(new java.awt.Font("OCR A Extended", 0, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel3.setText("Tecnologia de la Informacion y la Comunicacion");
+        jLabel3.setText("Teoría de la Información y la Comunicación");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);

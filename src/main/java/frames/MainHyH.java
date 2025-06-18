@@ -4,6 +4,13 @@
  */
 package frames;
 
+import static com.unsl.huffman.FilesClass.getExtensionFiles;
+import static com.unsl.huffman.FilesClass.setArchivoCodificado;
+import static com.unsl.huffman.FilesClass.setArchivoEntrada;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /**
  *
  * @author mateo
@@ -34,7 +41,6 @@ public class MainHyH extends javax.swing.JFrame {
         CompactB = new javax.swing.JButton();
         DescB = new javax.swing.JButton();
         tituloHuffman = new javax.swing.JLabel();
-        DescB2 = new javax.swing.JButton();
         exitB = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -96,26 +102,6 @@ public class MainHyH extends javax.swing.JFrame {
         tituloHuffman.setText("Hamming y Huffman");
         tituloHuffman.setToolTipText("");
 
-        DescB2.setBackground(new java.awt.Color(0, 153, 153));
-        DescB2.setFont(new java.awt.Font("OCR A Extended", 0, 26)); // NOI18N
-        DescB2.setForeground(new java.awt.Color(255, 255, 255));
-        DescB2.setText("Estadísticas");
-        DescB2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        DescB2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        DescB2.setMaximumSize(new java.awt.Dimension(336, 36));
-        DescB2.setMinimumSize(new java.awt.Dimension(336, 36));
-        DescB2.setPreferredSize(new java.awt.Dimension(336, 36));
-        DescB2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                DescB2MouseClicked(evt);
-            }
-        });
-        DescB2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DescB2ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout menuPanelLayout = new javax.swing.GroupLayout(menuPanel);
         menuPanel.setLayout(menuPanelLayout);
         menuPanelLayout.setHorizontalGroup(
@@ -128,8 +114,7 @@ public class MainHyH extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, menuPanelLayout.createSequentialGroup()
                         .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(DescB2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 785, Short.MAX_VALUE)
-                            .addComponent(DescB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(DescB, javax.swing.GroupLayout.DEFAULT_SIZE, 785, Short.MAX_VALUE)
                             .addComponent(CompactB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap())))
         );
@@ -142,9 +127,7 @@ public class MainHyH extends javax.swing.JFrame {
                 .addComponent(CompactB, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(DescB, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(DescB2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(147, Short.MAX_VALUE))
+                .addContainerGap(214, Short.MAX_VALUE))
         );
 
         jPanel2.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 830, 410));
@@ -171,7 +154,7 @@ public class MainHyH extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("OCR A Extended", 0, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel3.setText("Tecnologia de la Informacion y la Comunicacion");
+        jLabel3.setText("Teoría de la Información y la Comunicación");
         background.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 510, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -207,17 +190,41 @@ public class MainHyH extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_DescBMouseClicked
 
+    
+    public static void SelectArchivoConFiltro(String[] extensionesPermitidas, String descripcion) {
+    JFileChooser jf = new JFileChooser();
+    FileNameExtensionFilter filtro = new FileNameExtensionFilter(descripcion, extensionesPermitidas);
+    jf.setFileFilter(filtro);
+    int select = jf.showOpenDialog(jf);
+
+    if (select == JFileChooser.APPROVE_OPTION) {
+        String ruta = jf.getSelectedFile().getAbsolutePath();
+        String extension = getExtensionFiles(ruta);
+
+        boolean permitido = false;
+        for (String ext : extensionesPermitidas) {
+            if (extension.equalsIgnoreCase(ext)) {
+                permitido = true;
+                break;
+            }
+        }
+
+        if (!permitido) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un archivo válido (" + descripcion + ")", "Extensión inválida", JOptionPane.ERROR_MESSAGE);
+        } else {
+            setArchivoEntrada(ruta);
+            setArchivoCodificado(ruta); // Reutiliza misma ruta para codificado, o puedes generar una nueva si deseas
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "No se seleccionó ningún archivo.", "", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+    
+    
     private void DescBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DescBActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_DescBActionPerformed
-
-    private void DescB2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DescB2MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_DescB2MouseClicked
-
-    private void DescB2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DescB2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_DescB2ActionPerformed
 
     private void exitBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBActionPerformed
         // TODO add your handling code here:
@@ -262,7 +269,6 @@ public class MainHyH extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CompactB;
     private javax.swing.JButton DescB;
-    private javax.swing.JButton DescB2;
     private javax.swing.JPanel background;
     private javax.swing.JButton exitB;
     private javax.swing.JLabel jLabel2;

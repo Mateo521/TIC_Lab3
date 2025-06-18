@@ -1,5 +1,5 @@
-
 package com.unsl.huffman;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -7,72 +7,53 @@ import java.nio.file.Paths;
 import java.nio.file.Files;
 
 public class FilesClass {
-    
-    public static String archivoEntrada="";
-    public static String archivoCodificado="";
-    public static String archivoDecodificado="";
-    
-    
-    
-    public static void setArchivoEntrada(String path){
+
+    public static String archivoEntrada = "";
+    public static String archivoCodificado = "";
+    public static String archivoDecodificado = "";
+
+    public static void setArchivoEntrada(String path) {
         archivoEntrada = path;
     }
-    
-    public static String getArchivoEntrada(){
+
+    public static String getArchivoEntrada() {
         return archivoEntrada;
     }
-    
-    public static void setArchivoCodificado(String path){
+
+    public static void setArchivoCodificado(String path) {
         archivoCodificado = path;
     }
-    
-     public static String getArchivoCodificado(){
+
+    public static String getArchivoCodificado() {
         return archivoCodificado;
     }
-    
-    public static void setArchivoDecodificado(String path){
+
+    public static void setArchivoDecodificado(String path) {
         archivoEntrada = path;
     }
-    
-    public static String getArchivoDecodificado(){
+
+    public static String getArchivoDecodificado() {
         return archivoDecodificado;
     }
-    
-    
-      public static Boolean controlExtensionEntrada(String ext){ //Controla la extension sin errores
-          
-        return (ext.equals("txt") || ext.equals("docx") );
+
+    public static Boolean controlExtensionEntrada(String ext) { //Controla la extension sin errores
+
+        return (ext.equals("txt") || ext.equals("docx"));
     }
-      
-      public static Boolean controlExtensionSalida(String ext){ //Controla la extension sin errores
-          
-        return (ext.equals("huf") );
+
+    public static Boolean controlExtensionSalida(String ext) { //Controla la extension sin errores
+
+        return (ext.equals("huf"));
     }
-    
-      
-        public static String getExtensionFiles(String ruta){ //obtiene la extension de cualquier archivo
-       
-       String extension="";
-       int indice = ruta.lastIndexOf(".");
-       if(indice>0 && indice < ruta.length() -1){
-           extension= ruta.substring(indice+1);
-       }
-    
-       return extension;  
-     }
-      
-      
-        
-     
-        
-   
-    
-    
-    
-    
-    
-    
-    
+
+    public static String getExtensionFiles(String ruta) {
+        int i = ruta.lastIndexOf('.');
+        if (i > 0 && i < ruta.length() - 1) {
+            return ruta.substring(i + 1); // sin el punto
+        }
+        return "";
+    }
+
     public static long tamanioOriginal() {
         File aLeer = new File(archivoEntrada);
         try {
@@ -82,9 +63,8 @@ public class FilesClass {
         }
         return -1;
     }
-    
-    
-     public static File readFile(File path) {
+
+    public static File readFile(File path) {
         try {
             byte[] fileContents = Files.readAllBytes(Paths.get(path.getAbsolutePath()));
             File newFile = new File("auxiliar");
@@ -97,25 +77,23 @@ public class FilesClass {
             return null;
         }
     }
-    
 
     public static String abrirMensajeOriginal() throws IOException {
-        if(archivoEntrada.endsWith(".docx")){
-          String mensaje = ReadDocxFile.readDocxFile(archivoEntrada);
-          return mensaje;
-        }
-        else{
-        File aLeeraux =new File(archivoEntrada);
-        File aLeer = readFile(aLeeraux);
-        FileWriter writer = new FileWriter(aLeer,true);
-        writer.write(" ");
-        writer.close();
-        try {
-            byte[] mensaje = Files.readAllBytes(Paths.get(aLeer.getAbsolutePath()));
-            return new String(mensaje);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if (archivoEntrada.endsWith(".docx")) {
+            String mensaje = ReadDocxFile.readDocxFile(archivoEntrada);
+            return mensaje;
+        } else {
+            File aLeeraux = new File(archivoEntrada);
+            File aLeer = readFile(aLeeraux);
+            FileWriter writer = new FileWriter(aLeer, true);
+            writer.write(" ");
+            writer.close();
+            try {
+                byte[] mensaje = Files.readAllBytes(Paths.get(aLeer.getAbsolutePath()));
+                return new String(mensaje);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return "";
     }
@@ -130,7 +108,7 @@ public class FilesClass {
         }
         return null;
     }
-    
+
     public static long tamanioCodificado() {
         File aLeer = new File(archivoCodificado);
         try {
@@ -140,7 +118,7 @@ public class FilesClass {
         }
         return -1;
     }
-    
+
     public static long tamanioDecodificado() {
         File aLeer = new File(archivoDecodificado);
         try {
@@ -150,7 +128,7 @@ public class FilesClass {
         }
         return -1;
     }
-    
+
     public static String chequeoOriginalDecodificado() throws IOException {
         File aLeer = new File(archivoEntrada);
         File aLeeraux = new File(archivoDecodificado);
@@ -159,9 +137,9 @@ public class FilesClass {
             byte[] mensaje2 = Files.readAllBytes(Paths.get(aLeeraux.getAbsolutePath()));
             String original = new String(mensaje);
             String decodificado = new String(mensaje2);
-            if(original.equals(decodificado)){
+            if (original.equals(decodificado)) {
                 return "SON IGUALES!";
-            }else{
+            } else {
                 return "SON DIFERENTES!";
             }
         } catch (IOException e) {
@@ -169,26 +147,23 @@ public class FilesClass {
         }
         return "";
     }
-    
-    
-      //OBTIENE EL NOMBRE DEL ARCHIVO SIN SU EXTENSION, ME SIRVE PARA GENERAR EL ARCHIVO DECODIFICADO
-   public static String obtenerNombre(String texto) {
-    StringBuilder resultado = new StringBuilder();
-    
-    for (char c : texto.toCharArray()) {
-        if (c == '.') {
-            break;
+
+    //OBTIENE EL NOMBRE DEL ARCHIVO SIN SU EXTENSION, ME SIRVE PARA GENERAR EL ARCHIVO DECODIFICADO
+    public static String obtenerNombre(String texto) {
+        StringBuilder resultado = new StringBuilder();
+
+        for (char c : texto.toCharArray()) {
+            if (c == '.') {
+                break;
+            }
+            resultado.append(c);
         }
-        resultado.append(c);
+
+        return resultado.toString();
     }
-    
-    return resultado.toString();
-}
-    
-  
 
     public static void main(String[] args) throws IOException {
-       //SelectArchivo();
+        //SelectArchivo();
         System.out.println("Tamaño original: " + tamanioOriginal());
         System.out.println("Tamaño codificado: " + tamanioCodificado());
         System.out.println("Tamaño decodificado: " + tamanioDecodificado());
@@ -197,10 +172,7 @@ public class FilesClass {
         fileToDelete.delete();
         System.out.println("Mensaje codificado: " + abrirMensajeCodificado());
         System.out.println(chequeoOriginalDecodificado());
-        
-        
 
     }
 
-    
 }

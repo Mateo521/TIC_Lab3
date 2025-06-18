@@ -165,7 +165,7 @@ public class MainHamming extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("OCR A Extended", 0, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel3.setText("Tecnologia de la Informacion y la Comunicacion");
+        jLabel3.setText("Teoría de la Información y la Comunicación");
         background.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 510, -1));
 
         volver.setBackground(new java.awt.Color(0, 102, 102));

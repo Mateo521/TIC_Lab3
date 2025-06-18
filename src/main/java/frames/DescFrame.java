@@ -4,10 +4,15 @@
  */
 package frames;
 
+import com.unsl.huffman.Codificar;
 import com.unsl.huffman.Decodificar;
+import com.unsl.hamming.*;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -17,7 +22,9 @@ import javax.swing.JOptionPane;
  * @author Usuario
  */
 public class DescFrame extends javax.swing.JFrame {
-public static Decodificar descompactar = new Decodificar();
+
+    public static Decodificar descompactar = new Decodificar();
+
     /**
      * Creates new form DescFrame
      */
@@ -39,20 +46,20 @@ public static Decodificar descompactar = new Decodificar();
         volver = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        compactarB = new javax.swing.JButton();
+        descompactarB = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
+        archivo_descompactar = new javax.swing.JButton();
         ruta_antes = new javax.swing.JTextField();
         jSantes = new javax.swing.JScrollPane();
         ANTES = new javax.swing.JTextArea();
         jScrollPane1 = new javax.swing.JScrollPane();
         DESPUES = new javax.swing.JTextArea();
-        estadisticas = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         exitB1 = new javax.swing.JButton();
         tituloHuffman = new javax.swing.JLabel();
+        estadisticas = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -84,22 +91,22 @@ public static Decodificar descompactar = new Decodificar();
         jPanel5.setBackground(new java.awt.Color(0, 102, 102));
         jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        compactarB.setBackground(new java.awt.Color(0, 102, 102));
-        compactarB.setFont(new java.awt.Font("OCR A Extended", 0, 18)); // NOI18N
-        compactarB.setForeground(new java.awt.Color(255, 255, 255));
-        compactarB.setText("Descompactar");
-        compactarB.setBorder(null);
-        compactarB.setMaximumSize(new java.awt.Dimension(336, 36));
-        compactarB.setMinimumSize(new java.awt.Dimension(336, 36));
-        compactarB.setPreferredSize(new java.awt.Dimension(336, 36));
-        compactarB.addMouseListener(new java.awt.event.MouseAdapter() {
+        descompactarB.setBackground(new java.awt.Color(0, 102, 102));
+        descompactarB.setFont(new java.awt.Font("OCR A Extended", 0, 18)); // NOI18N
+        descompactarB.setForeground(new java.awt.Color(255, 255, 255));
+        descompactarB.setText("Descompactar");
+        descompactarB.setBorder(null);
+        descompactarB.setMaximumSize(new java.awt.Dimension(336, 36));
+        descompactarB.setMinimumSize(new java.awt.Dimension(336, 36));
+        descompactarB.setPreferredSize(new java.awt.Dimension(336, 36));
+        descompactarB.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                compactarBMouseClicked(evt);
+                descompactarBMouseClicked(evt);
             }
         });
-        compactarB.addActionListener(new java.awt.event.ActionListener() {
+        descompactarB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                compactarBActionPerformed(evt);
+                descompactarBActionPerformed(evt);
             }
         });
 
@@ -109,14 +116,14 @@ public static Decodificar descompactar = new Decodificar();
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(compactarB, javax.swing.GroupLayout.PREFERRED_SIZE, 194, Short.MAX_VALUE)
+                .addComponent(descompactarB, javax.swing.GroupLayout.PREFERRED_SIZE, 194, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(compactarB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(descompactarB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -126,16 +133,16 @@ public static Decodificar descompactar = new Decodificar();
         jPanel6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel6.setLayout(null);
 
-        jButton2.setFont(new java.awt.Font("OCR A Extended", 0, 18)); // NOI18N
-        jButton2.setText("Seleccionar archivo \".huf\"");
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        archivo_descompactar.setFont(new java.awt.Font("OCR A Extended", 0, 18)); // NOI18N
+        archivo_descompactar.setText("Seleccionar archivo \".huf\" , \".txt\", \".DE1\"...");
+        archivo_descompactar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        archivo_descompactar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                archivo_descompactarActionPerformed(evt);
             }
         });
-        jPanel6.add(jButton2);
-        jButton2.setBounds(10, 10, 410, 30);
+        jPanel6.add(archivo_descompactar);
+        archivo_descompactar.setBounds(10, 10, 410, 30);
 
         ruta_antes.setEditable(false);
         ruta_antes.setBackground(new java.awt.Color(204, 255, 255));
@@ -169,19 +176,6 @@ public static Decodificar descompactar = new Decodificar();
 
         jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 70, 350, 330));
 
-        estadisticas.setBackground(new java.awt.Color(204, 204, 204));
-        estadisticas.setFont(new java.awt.Font("OCR A Extended", 0, 18)); // NOI18N
-        estadisticas.setForeground(new java.awt.Color(43, 183, 246));
-        estadisticas.setText("VER ESTADÍSTICAS");
-        estadisticas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(43, 183, 246)));
-        estadisticas.setEnabled(false);
-        estadisticas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                estadisticasActionPerformed(evt);
-            }
-        });
-        jPanel2.add(estadisticas, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 360, 190, 30));
-
         background1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 1030, 410));
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 102));
@@ -189,7 +183,7 @@ public static Decodificar descompactar = new Decodificar();
 
         jLabel3.setFont(new java.awt.Font("OCR A Extended", 0, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel3.setText("Tecnologia de la Informacion y la Comunicacion");
+        jLabel3.setText("Teoría de la Información y la Comunicación");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -230,9 +224,22 @@ public static Decodificar descompactar = new Decodificar();
         tituloHuffman.setBackground(new java.awt.Color(0, 102, 102));
         tituloHuffman.setFont(new java.awt.Font("OCR A Extended", 1, 36)); // NOI18N
         tituloHuffman.setForeground(new java.awt.Color(255, 255, 255));
-        tituloHuffman.setText("DESCOMPACTAR");
+        tituloHuffman.setText("Descompactar");
         tituloHuffman.setToolTipText("");
         background1.add(tituloHuffman, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 320, -1));
+
+        estadisticas.setBackground(new java.awt.Color(204, 204, 204));
+        estadisticas.setFont(new java.awt.Font("OCR A Extended", 0, 18)); // NOI18N
+        estadisticas.setForeground(new java.awt.Color(43, 183, 246));
+        estadisticas.setText("VER ESTADÍSTICAS");
+        estadisticas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(43, 183, 246)));
+        estadisticas.setEnabled(false);
+        estadisticas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                estadisticasActionPerformed(evt);
+            }
+        });
+        background1.add(estadisticas, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 520, 190, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -261,12 +268,15 @@ public static Decodificar descompactar = new Decodificar();
         // TODO add your handling code here:
     }//GEN-LAST:event_volverActionPerformed
 
-    private void compactarBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_compactarBMouseClicked
+    private void descompactarBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_descompactarBMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_compactarBMouseClicked
+    }//GEN-LAST:event_descompactarBMouseClicked
 
-    private void compactarBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compactarBActionPerformed
-        // TODO add your handling code here:
+    private void descompactarBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_descompactarBActionPerformed
+       
+        
+   
+         // TODO add your handling code here:
            if(ruta_antes.getText().isEmpty()){
             JOptionPane.showMessageDialog(null,"Debe seleccionar un archivo","Error", JOptionPane.ERROR_MESSAGE);
 
@@ -300,16 +310,17 @@ public static Decodificar descompactar = new Decodificar();
             }
         }
         
+        
 
-    }//GEN-LAST:event_compactarBActionPerformed
+    }//GEN-LAST:event_descompactarBActionPerformed
 
     private void estadisticasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estadisticasActionPerformed
         // TODO add your handling code here:
-        
+
         JOptionPane.showMessageDialog(null, "\n"
-                    + "- Tamaño del archivo compactado: " + descompactar.tamanioCodificado() + " Bytes\n"
-                    + "- Tamaño del archivo descompactado: " + descompactar.tamanioDecodificado() + " Bytes\n"
-                    ,"ETADÍSTICAS OBTENIDAS", JOptionPane.INFORMATION_MESSAGE);
+                + "- Tamaño del archivo compactado: " + descompactar.tamanioCodificado() + " Bytes\n"
+                + "- Tamaño del archivo descompactado: " + descompactar.tamanioDecodificado() + " Bytes\n",
+                "ETADÍSTICAS OBTENIDAS", JOptionPane.INFORMATION_MESSAGE);
 
     }//GEN-LAST:event_estadisticasActionPerformed
 
@@ -322,8 +333,10 @@ public static Decodificar descompactar = new Decodificar();
         System.exit(0);
     }//GEN-LAST:event_exitB1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+    private void archivo_descompactarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_archivo_descompactarActionPerformed
+
+
+             // TODO add your handling code here:
         descompactar.setArchivoCodificado("");
         descompactar.setArchivoDecodificado("");
         descompactar.SelectArchivo();
@@ -347,20 +360,21 @@ public static Decodificar descompactar = new Decodificar();
                 Logger.getLogger(CompactFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+
+    }//GEN-LAST:event_archivo_descompactarActionPerformed
 
     /**
      * @param args the command line arguments
      */
-   
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea ANTES;
     private javax.swing.JTextArea DESPUES;
+    private javax.swing.JButton archivo_descompactar;
     private javax.swing.JPanel background1;
-    private javax.swing.JButton compactarB;
+    private javax.swing.JButton descompactarB;
     private javax.swing.JButton estadisticas;
     private javax.swing.JButton exitB1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package frames;
+
 import javax.swing.JOptionPane;
 import com.unsl.hamming.Hamming;
 import static com.unsl.hamming.Hamming.bloquesToString;
@@ -12,6 +13,7 @@ import static com.unsl.hamming.Hamming.detectarYCorregirErrores;
 import static com.unsl.hamming.Hamming.extraerDatosSinCorreccion;
 import static com.unsl.hamming.Hamming.guardarArchivoCodificado;
 import static com.unsl.hamming.Hamming.procesoEnBloques;
+import com.unsl.huffman.Codificar;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -22,6 +24,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextArea;
+
 /**
  *
  * @author mateo
@@ -32,7 +35,7 @@ public class DesprotegerHamming extends javax.swing.JFrame {
      * Creates new form DesprotegerHamming
      */
     public DesprotegerHamming() {
-            setUndecorated(true);
+        setUndecorated(true);
         initComponents();
         this.setLocationRelativeTo(null);
     }
@@ -58,12 +61,12 @@ public class DesprotegerHamming extends javax.swing.JFrame {
         ANTES = new javax.swing.JTextArea();
         jScrollPane1 = new javax.swing.JScrollPane();
         DESPUES = new javax.swing.JTextArea();
-        estadisticas = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         exitB1 = new javax.swing.JButton();
         tituloHuffman = new javax.swing.JLabel();
+        estadisticas = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -180,19 +183,6 @@ public class DesprotegerHamming extends javax.swing.JFrame {
 
         jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 70, 350, 330));
 
-        estadisticas.setBackground(new java.awt.Color(204, 204, 204));
-        estadisticas.setFont(new java.awt.Font("OCR A Extended", 0, 18)); // NOI18N
-        estadisticas.setForeground(new java.awt.Color(43, 183, 246));
-        estadisticas.setText("VER ESTADÍSTICAS");
-        estadisticas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(43, 183, 246)));
-        estadisticas.setEnabled(false);
-        estadisticas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                estadisticasActionPerformed(evt);
-            }
-        });
-        jPanel2.add(estadisticas, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 360, 190, 30));
-
         background1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 980, 410));
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 102));
@@ -200,7 +190,7 @@ public class DesprotegerHamming extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("OCR A Extended", 0, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel3.setText("Tecnologia de la Informacion y la Comunicacion");
+        jLabel3.setText("Teoría de la Información y la Comunicación");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -244,6 +234,19 @@ public class DesprotegerHamming extends javax.swing.JFrame {
         tituloHuffman.setToolTipText("");
         background1.add(tituloHuffman, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 230, -1));
 
+        estadisticas.setBackground(new java.awt.Color(204, 204, 204));
+        estadisticas.setFont(new java.awt.Font("OCR A Extended", 0, 18)); // NOI18N
+        estadisticas.setForeground(new java.awt.Color(43, 183, 246));
+        estadisticas.setText("VER ESTADÍSTICAS");
+        estadisticas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(43, 183, 246)));
+        estadisticas.setEnabled(false);
+        estadisticas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                estadisticasActionPerformed(evt);
+            }
+        });
+        background1.add(estadisticas, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 520, 190, 30));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -262,7 +265,7 @@ public class DesprotegerHamming extends javax.swing.JFrame {
 
     private void volverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_volverMouseClicked
         // TODO add your handling code here:
-        mainHuff m = new mainHuff();
+        MainHamming m = new MainHamming();
         this.dispose();
         m.setVisible(true);
     }//GEN-LAST:event_volverMouseClicked
@@ -276,112 +279,131 @@ public class DesprotegerHamming extends javax.swing.JFrame {
     }//GEN-LAST:event_desprotegerHMouseClicked
 
     private void desprotegerHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desprotegerHActionPerformed
-  if (ruta_antes.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Debe seleccionar un archivo .HAx o .HEx", "Error", JOptionPane.ERROR_MESSAGE);
-    } else {
-        Object[] opciones = {"Con corrección", "Sin corrección"};
-        int seleccion = JOptionPane.showOptionDialog(
-            null,
-            "¿Desea aplicar corrección de errores?",
-            "Decodificación",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE,
-            null,
-            opciones,
-            opciones[0]
-        );
+        if (ruta_antes.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un archivo .HAx o .HEx", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            Object[] opciones = {"Con corrección", "Sin corrección"};
+            int seleccion = JOptionPane.showOptionDialog(
+                    null,
+                    "¿Desea aplicar corrección de errores?",
+                    "Decodificación",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    opciones,
+                    opciones[0]
+            );
 
-        if (seleccion == 0) {
-            decodificarConCorreccionGUI(ruta_antes.getText(), DESPUES);
-        } else if (seleccion == 1) {
-            decodificarSinCorreccionGUI(ruta_antes.getText(), DESPUES);
+            if (seleccion == 0) {
+                decodificarConCorreccionGUI(ruta_antes.getText(), DESPUES);
+            } else if (seleccion == 1) {
+                decodificarSinCorreccionGUI(ruta_antes.getText(), DESPUES);
+            }
         }
-    }
-  
+
     }//GEN-LAST:event_desprotegerHActionPerformed
 
-    
     public void decodificarConCorreccionGUI(String inputPath, JTextArea resultadoArea) {
-    try {
-        List<List<Integer>> bloques = cargarArchivoCodificado(inputPath);
-        List<List<Integer>> bloquesCorregidos = new ArrayList<>();
+        try {
+            List<List<Integer>> bloques = cargarArchivoCodificado(inputPath);
+            List<List<Integer>> bloquesCorregidos = new ArrayList<>();
 
-        StringBuilder resultadoTexto = new StringBuilder();
+            StringBuilder resultadoTexto = new StringBuilder();
 
-        for (int i = 0; i < bloques.size(); i++) {
-            List<Integer> bloque = bloques.get(i);
-            List<Integer> corregido = detectarYCorregirErrores(bloque);
-            bloquesCorregidos.add(corregido);
+            for (int i = 0; i < bloques.size(); i++) {
+                List<Integer> bloque = bloques.get(i);
+                List<Integer> corregido = detectarYCorregirErrores(bloque);
+                bloquesCorregidos.add(corregido);
 
-            resultadoTexto.append("Bloque ").append(i + 1).append(":\n");
-            resultadoTexto.append("Original: ").append(bloque.toString()).append("\n");
-            resultadoTexto.append("Corregido: ").append(corregido.toString()).append("\n\n");
-        }
-
-        String textoCorregido = bloquesToString(bloquesCorregidos, 8);
-        resultadoTexto.append("Texto corregido:\n").append(textoCorregido);
-
-        String outputPath = inputPath.replace(".HA", ".DC").replace(".HE", ".DC");
-        Files.write(Paths.get(outputPath), textoCorregido.getBytes());
-
-        JOptionPane.showMessageDialog(
-            null,
-            "Archivo corregido y guardado en: " + outputPath,
-            "Decodificación con corrección",
-            JOptionPane.INFORMATION_MESSAGE
-        );
-
-        resultadoArea.setText(resultadoTexto.toString());
-        estadisticas.setEnabled(true);
-
-    } catch (IOException e) {
-        JOptionPane.showMessageDialog(null, "Error al procesar el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
-}
-
-    
-    public void decodificarSinCorreccionGUI(String inputPath, JTextArea resultadoArea) {
-    try {
-        List<List<Integer>> bloques = cargarArchivoCodificado(inputPath);
-        List<List<Integer>> bloquesDecodificados = new ArrayList<>();
-
-        StringBuilder resultadoTexto = new StringBuilder();
-
-        for (List<Integer> bloque : bloques) {
-            int globalParity = bloque.get(bloque.size() - 1);
-            int calculado = calcularParidadGlobal(bloque.subList(0, bloque.size() - 1));
-
-            if (globalParity != calculado) {
-                resultadoTexto.append("Advertencia: Error detectado en la paridad global\n");
+                resultadoTexto.append("Bloque ").append(i + 1).append(":\n");
+                resultadoTexto.append("Original: ").append(bloque.toString()).append("\n");
+                resultadoTexto.append("Corregido: ").append(corregido.toString()).append("\n\n");
             }
 
-            List<Integer> datos = extraerDatosSinCorreccion(bloque);
-            bloquesDecodificados.add(datos);
+            String textoCorregido = bloquesToString(bloquesCorregidos, 8);
+            resultadoTexto.append("Texto corregido:\n").append(textoCorregido);
+
+            String outputPath = inputPath.replace(".HA", ".DC").replace(".HE", ".DC");
+            Files.write(Paths.get(outputPath), textoCorregido.getBytes());
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Archivo corregido y guardado en: " + outputPath,
+                    "Decodificación con corrección",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+
+            resultadoArea.setText(resultadoTexto.toString());
+            estadisticas.setEnabled(true);
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al procesar el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-
-        String textoDecodificado = bloquesToString(bloquesDecodificados, 8);
-        String outputPath = inputPath.replace(".HA", ".DE").replace(".HE", ".DE");
-        Files.write(Paths.get(outputPath), textoDecodificado.getBytes());
-
-        JOptionPane.showMessageDialog(
-            null,
-            "Archivo decodificado (sin corrección) guardado en: " + outputPath,
-            "Decodificación sin corrección",
-            JOptionPane.INFORMATION_MESSAGE
-        );
-
-        resultadoTexto.append("\nTexto decodificado:\n").append(textoDecodificado);
-        resultadoArea.setText(resultadoTexto.toString());
-        estadisticas.setEnabled(true);
-
-    } catch (IOException e) {
-        JOptionPane.showMessageDialog(null, "Error al procesar el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
-}
-    
-    
+
+    public void decodificarSinCorreccionGUI(String inputPath, JTextArea resultadoArea) {
+        try {
+            List<List<Integer>> bloques = cargarArchivoCodificado(inputPath);
+            List<List<Integer>> bloquesDecodificados = new ArrayList<>();
+
+            StringBuilder resultadoTexto = new StringBuilder();
+
+            for (List<Integer> bloque : bloques) {
+                int globalParity = bloque.get(bloque.size() - 1);
+                int calculado = calcularParidadGlobal(bloque.subList(0, bloque.size() - 1));
+
+                if (globalParity != calculado) {
+                    resultadoTexto.append("Advertencia: Error detectado en la paridad global\n");
+                }
+
+                List<Integer> datos = extraerDatosSinCorreccion(bloque);
+                bloquesDecodificados.add(datos);
+            }
+
+            String textoDecodificado = bloquesToString(bloquesDecodificados, 8);
+            String outputPath = inputPath.replace(".HA", ".DE").replace(".HE", ".DE");
+            Files.write(Paths.get(outputPath), textoDecodificado.getBytes());
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Archivo decodificado (sin corrección) guardado en: " + outputPath,
+                    "Decodificación sin corrección",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+
+            resultadoTexto.append("\nTexto decodificado:\n").append(textoDecodificado);
+            resultadoArea.setText(resultadoTexto.toString());
+            estadisticas.setEnabled(true);
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al procesar el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
+            // TODO add your handling code here:
+        Codificar.setArchivoEntrada("");
+        Codificar.seleccionarArchivoConFiltro(
+                new String[]{"HA1", "HA2", "HA3","HE1", "HE2", "HE3"},
+                "Archivos .HA1, .HA2 , .HA3 .HE1, .HE2 , .HE3",
+                ruta_antes,
+                ANTES
+        );
+
+        if (!Codificar.getArchivoEntrada().isEmpty()) {
+            ruta_antes.setText(Codificar.getArchivoEntrada());
+
+            try {
+                ANTES.setText(Codificar.abrirMensajeOriginal());
+            } catch (IOException ex) {
+                Logger.getLogger(CompactFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void ruta_antesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ruta_antesActionPerformed

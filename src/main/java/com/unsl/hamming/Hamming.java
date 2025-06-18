@@ -332,22 +332,22 @@ public static void imprimirCaracterBits(String text) {
     
 
 
-  public static String cargarArchivo(Scanner scanner) {
-        System.out.print("Ingrese la ruta del archivo .txt: ");
-        String filePath = scanner.nextLine();
-        if (!filePath.endsWith(".txt")) {
-            System.out.println("El archivo debe tener extensión .txt");
-            return null;
-        }
-        try {
-            String contenido = new String(Files.readAllBytes(Paths.get(filePath)));
-            System.out.println("Archivo cargado exitosamente.");
-            return filePath;
-        } catch (IOException e) {
-            System.out.println("Error al cargar el archivo: " + e.getMessage());
-            return null;
-        }
+ public static String cargarArchivo(Scanner scanner) {
+    System.out.print("Ingrese la ruta del archivo: ");
+    String filePath = scanner.nextLine();
+    
+    try {
+        // Leer el contenido del archivo
+        String contenido = new String(Files.readAllBytes(Paths.get(filePath)));
+        System.out.println("Archivo cargado exitosamente.");
+        return filePath;
+    } catch (IOException e) {
+        // Manejar el error en caso de que el archivo no se pueda cargar
+        System.out.println("Error al cargar el archivo: " + e.getMessage());
+        return null;
     }
+}
+
 public static void imprimirBloques(List<List<Integer>> bloques) {
     System.out.println("Contenido del archivo codificado:");
     for (int i = 0; i < bloques.size(); i++) {
@@ -465,6 +465,50 @@ public static void introducirErroresRandom(List<List<Integer>> bloques) {
         } else {
             System.out.printf("Bloque %d: Sin cambios\n", i+1);
         }
+    }
+}
+
+
+
+public static void introducirUnErrorPorBloque(List<List<Integer>> bloques) {
+    Random random = new Random();
+    System.out.println("\nIntroduciendo un error por bloque:");
+    
+    for (int i = 0; i < bloques.size(); i++) {
+        List<Integer> bloque = bloques.get(i);
+        int position = random.nextInt(bloque.size());
+        int originalBit = bloque.get(position);
+        bloque.set(position, 1 - originalBit);
+        
+        System.out.printf("Bloque %d: Error introducido en posicion %d (cambio de %d a %d)\n",
+            i+1, position, originalBit, bloque.get(position));
+    }
+}
+
+public static void introducirDosErroresPorBloque(List<List<Integer>> bloques) {
+    Random random = new Random();
+    System.out.println("\nIntroduciendo dos errores por bloque:");
+    
+    for (int i = 0; i < bloques.size(); i++) {
+        List<Integer> bloque = bloques.get(i);
+        
+        // primer error
+        int position1 = random.nextInt(bloque.size());
+        int originalBit1 = bloque.get(position1);
+        bloque.set(position1, 1 - originalBit1);
+        
+        // otro error (se asegura que es en otra posicion al anterior)
+        int position2;
+        do {
+            position2 = random.nextInt(bloque.size());
+        } while (position2 == position1);
+        
+        int originalBit2 = bloque.get(position2);
+        bloque.set(position2, 1 - originalBit2);
+        
+        System.out.printf("Bloque %d: Errores en posiciones %d (cambio de %d a %d) y %d (cambio de %d a %d)\n",
+            i+1, position1, originalBit1, bloque.get(position1),
+            position2, originalBit2, bloque.get(position2));
     }
 }
 
