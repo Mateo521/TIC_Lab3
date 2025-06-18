@@ -2,7 +2,6 @@ frames\CompactFrame$3.class
 frames\DescFrame$3.class
 com\unsl\huffman\NodoHuffman.class
 frames\DesprotegerHamming$8.class
-frames\MainHamming$9.class
 frames\MainHyH$5.class
 frames\ProtegerHamming$9.class
 frames\MainHyH$1.class
@@ -26,7 +25,6 @@ frames\MainHamming$5.class
 frames\MainHamming$1.class
 frames\CompactFrame.class
 frames\mainHuff$2.class
-frames\MainHamming$8.class
 frames\mainHuff.class
 frames\DesprotegerHamming.class
 frames\ProtegerHamming$3.class

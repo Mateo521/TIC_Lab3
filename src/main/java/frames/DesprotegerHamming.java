@@ -14,6 +14,8 @@ import static com.unsl.hamming.Hamming.extraerDatosSinCorreccion;
 import static com.unsl.hamming.Hamming.guardarArchivoCodificado;
 import static com.unsl.hamming.Hamming.procesoEnBloques;
 import com.unsl.huffman.Codificar;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 /**
@@ -30,6 +33,11 @@ import javax.swing.JTextArea;
  * @author mateo
  */
 public class DesprotegerHamming extends javax.swing.JFrame {
+
+    private List<List<Integer>> archivoDesprotegido;
+    private List<List<Integer>> archivoOriginalCodificado;
+    private int erroresDetectados = 0;
+    private int erroresCorregidos = 0;
 
     /**
      * Creates new form DesprotegerHamming
@@ -308,6 +316,9 @@ public class DesprotegerHamming extends javax.swing.JFrame {
             List<List<Integer>> bloques = cargarArchivoCodificado(inputPath);
             List<List<Integer>> bloquesCorregidos = new ArrayList<>();
 
+            archivoOriginalCodificado = bloques;
+            archivoDesprotegido = bloquesCorregidos;
+
             StringBuilder resultadoTexto = new StringBuilder();
 
             for (int i = 0; i < bloques.size(); i++) {
@@ -318,6 +329,19 @@ public class DesprotegerHamming extends javax.swing.JFrame {
                 resultadoTexto.append("Bloque ").append(i + 1).append(":\n");
                 resultadoTexto.append("Original: ").append(bloque.toString()).append("\n");
                 resultadoTexto.append("Corregido: ").append(corregido.toString()).append("\n\n");
+
+                if (!bloque.equals(corregido)) {
+                    erroresCorregidos++;
+                }
+
+                int globalParity = bloque.get(bloque.size() - 1);
+                int calculado = calcularParidadGlobal(bloque.subList(0, bloque.size() - 1));
+                if (globalParity != calculado) {
+                    erroresDetectados++;
+                }
+
+                bloquesCorregidos.add(corregido);
+
             }
 
             String textoCorregido = bloquesToString(bloquesCorregidos, 8);
@@ -383,10 +407,10 @@ public class DesprotegerHamming extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-            // TODO add your handling code here:
+        // TODO add your handling code here:
         Codificar.setArchivoEntrada("");
         Codificar.seleccionarArchivoConFiltro(
-                new String[]{"HA1", "HA2", "HA3","HE1", "HE2", "HE3"},
+                new String[]{"HA1", "HA2", "HA3", "HE1", "HE2", "HE3"},
                 "Archivos .HA1, .HA2 , .HA3 .HE1, .HE2 , .HE3",
                 ruta_antes,
                 ANTES
@@ -401,9 +425,8 @@ public class DesprotegerHamming extends javax.swing.JFrame {
                 Logger.getLogger(CompactFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
-        
-        
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void ruta_antesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ruta_antesActionPerformed
@@ -411,7 +434,33 @@ public class DesprotegerHamming extends javax.swing.JFrame {
     }//GEN-LAST:event_ruta_antesActionPerformed
 
     private void estadisticasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estadisticasActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:  
+        if (archivoDesprotegido == null || archivoDesprotegido.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No hay archivo decodificado cargado", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        StringBuilder stats = new StringBuilder();
+        int blockCount = archivoDesprotegido.size();
+        int bitsRecuperados = archivoDesprotegido.stream().mapToInt(List::size).sum();
+
+        stats.append("ESTADÍSTICAS DE DECODIFICACIÓN\n");
+        stats.append("==============================\n\n");
+        stats.append("Cantidad de bloques: ").append(blockCount).append("\n");
+        stats.append("Bits totales recuperados: ").append(bitsRecuperados).append("\n");
+        stats.append("Errores detectados por paridad global: ").append(erroresDetectados).append("\n");
+        stats.append("Errores corregidos (Hamming): ").append(erroresCorregidos).append("\n");
+
+        double tasaRecuperacion = 100.0 * (blockCount - erroresCorregidos) / blockCount;
+        stats.append(String.format("Tasa de bloques sin errores: %.2f%%\n", tasaRecuperacion));
+
+        JTextArea textArea = new JTextArea(stats.toString());
+        textArea.setEditable(false);
+        textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(600, 400));
+        JOptionPane.showMessageDialog(this, scrollPane, "Estadísticas de Decodificación", JOptionPane.INFORMATION_MESSAGE);
+
     }//GEN-LAST:event_estadisticasActionPerformed
 
     private void exitB1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitB1ActionPerformed
