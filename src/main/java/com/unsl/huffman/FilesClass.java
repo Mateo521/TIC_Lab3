@@ -5,6 +5,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class FilesClass {
 
@@ -41,9 +44,12 @@ public class FilesClass {
         return (ext.equals("txt") || ext.equals("docx"));
     }
 
-    public static Boolean controlExtensionSalida(String ext) { //Controla la extension sin errores
-
-        return (ext.equals("huf"));
+    public static Boolean controlExtensionSalida(String ext) {
+        if (ext.equals("huf")) {
+            return true;
+        }
+        Set<String> extensionesMayus = new HashSet<>(Arrays.asList("DC1", "DC2", "DC3", "DE1", "DE2", "DE3"));
+        return extensionesMayus.contains(ext.toUpperCase());
     }
 
     public static String getExtensionFiles(String ruta) {

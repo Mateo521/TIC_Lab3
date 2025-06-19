@@ -364,7 +364,9 @@ public static void guardarArchivoCodificado(List<List<Integer>> bloques, String 
         for (Integer bit : bloque) {
             sb.append(bit);
         }
+        
         sb.append("\n");
+     
     }
     Files.write(Paths.get(filePath), sb.toString().getBytes());
 }

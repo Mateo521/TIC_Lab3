@@ -340,7 +340,7 @@ public class DesprotegerHamming extends javax.swing.JFrame {
                     erroresDetectados++;
                 }
 
-                bloquesCorregidos.add(corregido);
+                 
 
             }
 

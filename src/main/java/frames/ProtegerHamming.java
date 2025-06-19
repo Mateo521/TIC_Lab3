@@ -33,7 +33,8 @@ import javax.swing.JTextArea;
  * @author mateo
  */
 public class ProtegerHamming extends javax.swing.JFrame {
-private List<List<Integer>> archivoProtegido;
+
+    private List<List<Integer>> archivoProtegido;
 
     /**
      * Creates new form ProtegerHamming
@@ -287,71 +288,49 @@ private List<List<Integer>> archivoProtegido;
         if (ruta_antes.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Debe seleccionar un archivo", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            Object[] opciones = {"8 bits (.HA1)", "256 bits (.HA2)", "4096 bits (.HA3)"};
-            int seleccion = JOptionPane.showOptionDialog(
-                    null,
-                    "Seleccione el tamaño de bloque para Hamming:",
-                    "Configuración de Bloque",
-                    JOptionPane.DEFAULT_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    opciones,
-                    opciones[0]
-            );
-
-            if (seleccion >= 0) {
-                // Ejecuta protección Hamming con el archivo cargado
-                protegerConHamming(ruta_antes.getText(), seleccion + 1, DESPUES);
-            }
+            ejecutarProteccionHamming(ruta_antes.getText(), DESPUES);
         }
 
     }//GEN-LAST:event_protegerHActionPerformed
 
-    public void protegerConHamming(String inputPath, int opcionBloque, JTextArea resultadoArea) {
-
-        if (ruta_antes.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debe seleccionar un archivo", "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-            // First choose block size
-            Object[] opcionesBloque = {"8 bits (.HA1)", "256 bits (.HA2)", "4096 bits (.HA3)"};
-            int seleccionBloque = JOptionPane.showOptionDialog(
-                    null,
-                    "Seleccione el tamaño de bloque para Hamming:",
-                    "Configuración de Bloque",
-                    JOptionPane.DEFAULT_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    opcionesBloque,
-                    opcionesBloque[0]
-            );
-
-            if (seleccionBloque >= 0) {
-                // Then choose error option
-                Object[] opcionesError = {"Sin errores", "1 Error por bloque", "2 Errores por bloque"};
-                int seleccionError = JOptionPane.showOptionDialog(
-                        null,
-                        "¿Desea introducir errores en el archivo protegido?",
-                        "Introducción de Errores",
-                        JOptionPane.DEFAULT_OPTION,
-                        JOptionPane.QUESTION_MESSAGE,
-                        null,
-                        opcionesError,
-                        opcionesError[0]
-                );
-
-                if (seleccionError >= 0) {
-                    // Execute Hamming protection with the selected options
-                    protegerConHamming(ruta_antes.getText(), seleccionBloque + 1, seleccionError, DESPUES);
-                }
-            }
+    public void ejecutarProteccionHamming(String inputPath, JTextArea resultadoArea) {
+        Object[] opcionesBloque = {"8 bits (.HA1)", "256 bits (.HA2)", "4096 bits (.HA3)"};
+        int seleccionBloque = JOptionPane.showOptionDialog(
+                null,
+                "Seleccione el tamaño de bloque para Hamming:",
+                "Configuración de Bloque",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opcionesBloque,
+                opcionesBloque[0]
+        );
+        if (seleccionBloque < 0) {
+            return;
         }
+
+        Object[] opcionesError = {"Sin errores", "1 Error por bloque", "2 Errores por bloque"};
+        int seleccionError = JOptionPane.showOptionDialog(
+                null,
+                "¿Desea introducir errores en el archivo protegido?",
+                "Introducción de Errores",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opcionesError,
+                opcionesError[0]
+        );
+        if (seleccionError < 0) {
+            return;
+        }
+
+        // Llama al proceso final
+        procesarProteccionHamming(inputPath, seleccionBloque + 1, seleccionError, resultadoArea);
     }
 
-    public void protegerConHamming(String inputPath, int opcionBloque, int opcionError, JTextArea resultadoArea) {
+    public void procesarProteccionHamming(String inputPath, int opcionBloque, int opcionError, JTextArea resultadoArea) {
         int bloqueTamanio;
         String extension;
-
-        // Determine block size
         switch (opcionBloque) {
             case 1:
                 bloqueTamanio = 8;
@@ -371,52 +350,33 @@ private List<List<Integer>> archivoProtegido;
         }
 
         try {
-            // Read input file
             String contenido = new String(Files.readAllBytes(Paths.get(inputPath)));
-
-            // Get base name without extension
-            String baseName = inputPath;
-            if (inputPath.endsWith(".txt") || inputPath.endsWith(".docx") || inputPath.endsWith(".huf")) {
-                baseName = inputPath.substring(0, inputPath.lastIndexOf('.'));
-            }
-
-            // Process blocks
+            String baseName = inputPath.substring(0, inputPath.lastIndexOf('.'));
             List<List<Integer>> bloquesCodificados = procesoEnBloques(contenido, bloqueTamanio);
-
             this.archivoProtegido = bloquesCodificados;
 
-            
-            // Apply errors if requested
             switch (opcionError) {
                 case 1:
                     introducirUnErrorPorBloque(bloquesCodificados);
-                    extension = extension.replace("HA", "HE"); // Change extension for error files
+                    extension = extension.replace("HA", "HE");
                     break;
                 case 2:
                     introducirDosErroresPorBloque(bloquesCodificados);
-                    extension = extension.replace("HA", "HE"); // Change extension for error files
+                    extension = extension.replace("HA", "HE");
                     break;
             }
 
-            // Save output file
             String outputPath = baseName + extension;
             guardarArchivoCodificado(bloquesCodificados, outputPath);
 
-            // Show success message
             String message = "El archivo fue protegido";
             if (opcionError > 0) {
                 message += " y se introdujeron " + opcionError + (opcionError == 1 ? " error" : " errores") + " por bloque";
             }
             message += ".\nGuardado en: " + outputPath;
 
-            JOptionPane.showMessageDialog(
-                    null,
-                    message,
-                    "Operación exitosa",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
+            JOptionPane.showMessageDialog(null, message, "Operación exitosa", JOptionPane.INFORMATION_MESSAGE);
 
-            // Display in text area
             StringBuilder resultado = new StringBuilder();
             for (List<Integer> bloque : bloquesCodificados) {
                 for (Integer bit : bloque) {
@@ -426,7 +386,6 @@ private List<List<Integer>> archivoProtegido;
             }
             resultadoArea.setText(resultado.toString());
             estadisticas.setEnabled(true);
-
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error al procesar el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -481,13 +440,11 @@ private List<List<Integer>> archivoProtegido;
 
         StringBuilder stats = new StringBuilder();
 
-      
         if (archivoProtegido == null || archivoProtegido.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No hay archivo protegido cargado", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
- 
         int totalOriginalBits = 0;
         int totalProtectedBits = 0;
         int totalParityBits = 0;
@@ -496,12 +453,10 @@ private List<List<Integer>> archivoProtegido;
         int totalGlobalParityBits = 0;
         int blockCount = archivoProtegido.size();
 
-       
         List<Integer> firstBlock = archivoProtegido.get(0);
         int originalBlockSize = firstBlock.size() - calcularParidadBitsHamming(firstBlock.size()) - 1; // -1 for global bit
         int protectedBlockSize = firstBlock.size();
 
-     
         for (List<Integer> block : archivoProtegido) {
             totalOriginalBits += originalBlockSize;
             totalProtectedBits += block.size();
@@ -509,11 +464,10 @@ private List<List<Integer>> archivoProtegido;
 
             int hammingParityBits = calcularParidadBitsHamming(originalBlockSize);
             totalHammingParityBits += hammingParityBits;
-            totalGlobalParityBits += 1; 
+            totalGlobalParityBits += 1;
 
-        
             int dataBits = 0;
-            for (int i = 0; i < block.size() - 1; i++) { 
+            for (int i = 0; i < block.size() - 1; i++) {
                 if (!esPotenciaDeDos(i + 1)) {
                     dataBits++;
                 }
@@ -521,12 +475,13 @@ private List<List<Integer>> archivoProtegido;
             totalDataBitsInProtected += dataBits;
         }
 
-    
         stats.append("ESTADÍSTICAS DE PROTECCIÓN HAMMING\n");
         stats.append("==================================\n\n");
+        /*
         String rutaSeleccionada = Codificar.getArchivoEntrada();
+        
         stats.append(String.format("Archivo: %s\n", !rutaSeleccionada.isEmpty() ? rutaSeleccionada : "N/A"));
-
+         */
         stats.append(String.format("Cantidad de módulos (bloques): %d\n\n", blockCount));
 
         stats.append("Por módulo:\n");
@@ -558,7 +513,6 @@ private List<List<Integer>> archivoProtegido;
         stats.append(String.format(" - Relación bits información:protección: 1:%.2f",
                 (double) (totalProtectedBits - totalOriginalBits) / totalOriginalBits));
 
-     
         JTextArea textArea = new JTextArea(stats.toString());
         textArea.setEditable(false);
         textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
