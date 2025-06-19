@@ -92,7 +92,7 @@ public class DescFrame extends javax.swing.JFrame {
         jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         descompactarB.setBackground(new java.awt.Color(0, 102, 102));
-        descompactarB.setFont(new java.awt.Font("OCR A Extended", 0, 18)); // NOI18N
+        descompactarB.setFont(new java.awt.Font("OCR A Extended", 0, 26)); // NOI18N
         descompactarB.setForeground(new java.awt.Color(255, 255, 255));
         descompactarB.setText("Descompactar");
         descompactarB.setBorder(null);
@@ -224,7 +224,7 @@ public class DescFrame extends javax.swing.JFrame {
         tituloHuffman.setBackground(new java.awt.Color(0, 102, 102));
         tituloHuffman.setFont(new java.awt.Font("OCR A Extended", 1, 36)); // NOI18N
         tituloHuffman.setForeground(new java.awt.Color(255, 255, 255));
-        tituloHuffman.setText("Descompactar");
+        tituloHuffman.setText("DESCOMPACTAR");
         tituloHuffman.setToolTipText("");
         background1.add(tituloHuffman, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 320, -1));
 

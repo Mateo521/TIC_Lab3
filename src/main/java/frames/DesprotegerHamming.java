@@ -238,9 +238,9 @@ public class DesprotegerHamming extends javax.swing.JFrame {
         tituloHuffman.setBackground(new java.awt.Color(0, 102, 102));
         tituloHuffman.setFont(new java.awt.Font("OCR A Extended", 1, 36)); // NOI18N
         tituloHuffman.setForeground(new java.awt.Color(255, 255, 255));
-        tituloHuffman.setText("Desproteger");
+        tituloHuffman.setText("DESPROTEGER");
         tituloHuffman.setToolTipText("");
-        background1.add(tituloHuffman, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 230, -1));
+        background1.add(tituloHuffman, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 340, -1));
 
         estadisticas.setBackground(new java.awt.Color(204, 204, 204));
         estadisticas.setFont(new java.awt.Font("OCR A Extended", 0, 18)); // NOI18N

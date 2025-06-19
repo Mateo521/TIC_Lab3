@@ -59,7 +59,7 @@ public class MainHyH extends javax.swing.JFrame {
         CompactB.setBackground(new java.awt.Color(0, 153, 153));
         CompactB.setFont(new java.awt.Font("OCR A Extended", 0, 26)); // NOI18N
         CompactB.setForeground(new java.awt.Color(255, 255, 255));
-        CompactB.setText("Hamming");
+        CompactB.setText("HAMMING");
         CompactB.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         CompactB.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         CompactB.setMaximumSize(new java.awt.Dimension(336, 36));
@@ -79,7 +79,7 @@ public class MainHyH extends javax.swing.JFrame {
         DescB.setBackground(new java.awt.Color(0, 153, 153));
         DescB.setFont(new java.awt.Font("OCR A Extended", 0, 26)); // NOI18N
         DescB.setForeground(new java.awt.Color(255, 255, 255));
-        DescB.setText("Huffman");
+        DescB.setText("HUFFMAN");
         DescB.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         DescB.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         DescB.setMaximumSize(new java.awt.Dimension(336, 36));

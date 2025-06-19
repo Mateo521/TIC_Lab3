@@ -92,7 +92,7 @@ public class MainHamming extends javax.swing.JFrame {
 
         tituloHuffman.setFont(new java.awt.Font("OCR A Extended", 1, 36)); // NOI18N
         tituloHuffman.setForeground(new java.awt.Color(218, 236, 255));
-        tituloHuffman.setText("Hamming");
+        tituloHuffman.setText("HAMMING");
         tituloHuffman.setToolTipText("");
 
         javax.swing.GroupLayout menuPanelLayout = new javax.swing.GroupLayout(menuPanel);

@@ -234,7 +234,7 @@ private List<List<Integer>> archivoProtegido;
         tituloHuffman.setBackground(new java.awt.Color(0, 102, 102));
         tituloHuffman.setFont(new java.awt.Font("OCR A Extended", 1, 36)); // NOI18N
         tituloHuffman.setForeground(new java.awt.Color(255, 255, 255));
-        tituloHuffman.setText("Proteger");
+        tituloHuffman.setText("PROTEGER");
         tituloHuffman.setToolTipText("");
         background1.add(tituloHuffman, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 210, -1));
 

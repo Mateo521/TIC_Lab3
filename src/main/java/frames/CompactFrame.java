@@ -47,12 +47,12 @@ public static Codificar compact = new Codificar();
         ANTES = new javax.swing.JTextArea();
         jScrollPane1 = new javax.swing.JScrollPane();
         DESPUES = new javax.swing.JTextArea();
-        estadisticas = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         exitB1 = new javax.swing.JButton();
         tituloHuffman = new javax.swing.JLabel();
+        estadisticas = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -170,19 +170,6 @@ public static Codificar compact = new Codificar();
 
         jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 70, 350, 330));
 
-        estadisticas.setBackground(new java.awt.Color(204, 204, 204));
-        estadisticas.setFont(new java.awt.Font("OCR A Extended", 0, 18)); // NOI18N
-        estadisticas.setForeground(new java.awt.Color(43, 183, 246));
-        estadisticas.setText("VER ESTADÍSTICAS");
-        estadisticas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(43, 183, 246)));
-        estadisticas.setEnabled(false);
-        estadisticas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                estadisticasActionPerformed(evt);
-            }
-        });
-        jPanel2.add(estadisticas, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 360, 190, 30));
-
         background1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 980, 410));
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 102));
@@ -233,6 +220,19 @@ public static Codificar compact = new Codificar();
         tituloHuffman.setText("COMPACTAR");
         tituloHuffman.setToolTipText("");
         background1.add(tituloHuffman, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 250, -1));
+
+        estadisticas.setBackground(new java.awt.Color(204, 204, 204));
+        estadisticas.setFont(new java.awt.Font("OCR A Extended", 0, 18)); // NOI18N
+        estadisticas.setForeground(new java.awt.Color(43, 183, 246));
+        estadisticas.setText("VER ESTADÍSTICAS");
+        estadisticas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(43, 183, 246)));
+        estadisticas.setEnabled(false);
+        estadisticas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                estadisticasActionPerformed(evt);
+            }
+        });
+        background1.add(estadisticas, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 520, 190, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
