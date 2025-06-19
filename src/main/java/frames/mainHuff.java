@@ -100,32 +100,32 @@ public class mainHuff extends javax.swing.JFrame {
         menuPanelLayout.setHorizontalGroup(
             menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, menuPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(CompactB, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53))
+                .addGap(51, 51, 51))
             .addGroup(menuPanelLayout.createSequentialGroup()
                 .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(menuPanelLayout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(DescB, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(menuPanelLayout.createSequentialGroup()
                         .addGap(145, 145, 145)
-                        .addComponent(tituloHuffman)))
-                .addContainerGap(39, Short.MAX_VALUE))
+                        .addComponent(tituloHuffman))
+                    .addGroup(menuPanelLayout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(DescB, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
         menuPanelLayout.setVerticalGroup(
             menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuPanelLayout.createSequentialGroup()
-                .addGap(68, 68, 68)
+                .addGap(28, 28, 28)
                 .addComponent(tituloHuffman, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(63, 63, 63)
+                .addGap(39, 39, 39)
                 .addComponent(CompactB, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
+                .addGap(18, 18, 18)
                 .addComponent(DescB, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
-        jPanel2.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 40, 460, 370));
+        jPanel2.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 70, 460, 290));
 
         background.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, 40, 1070, 460));
 

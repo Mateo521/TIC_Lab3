@@ -40,7 +40,6 @@ public class MainHyH extends javax.swing.JFrame {
         menuPanel = new javax.swing.JPanel();
         CompactB = new javax.swing.JButton();
         DescB = new javax.swing.JButton();
-        tituloHuffman = new javax.swing.JLabel();
         exitB = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -97,40 +96,28 @@ public class MainHyH extends javax.swing.JFrame {
             }
         });
 
-        tituloHuffman.setFont(new java.awt.Font("OCR A Extended", 1, 24)); // NOI18N
-        tituloHuffman.setForeground(new java.awt.Color(218, 236, 255));
-        tituloHuffman.setText("Hamming y Huffman");
-        tituloHuffman.setToolTipText("");
-
         javax.swing.GroupLayout menuPanelLayout = new javax.swing.GroupLayout(menuPanel);
         menuPanel.setLayout(menuPanelLayout);
         menuPanelLayout.setHorizontalGroup(
             menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuPanelLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
+                .addContainerGap()
                 .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(menuPanelLayout.createSequentialGroup()
-                        .addComponent(tituloHuffman, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, menuPanelLayout.createSequentialGroup()
-                        .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(DescB, javax.swing.GroupLayout.DEFAULT_SIZE, 785, Short.MAX_VALUE)
-                            .addComponent(CompactB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())))
+                    .addComponent(CompactB, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
+                    .addComponent(DescB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         menuPanelLayout.setVerticalGroup(
             menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tituloHuffman, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(CompactB, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(50, 50, 50)
                 .addComponent(DescB, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(214, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
-        jPanel2.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 830, 410));
+        jPanel2.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 120, 490, 220));
 
         background.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, 40, 1070, 460));
 
@@ -275,6 +262,5 @@ public class MainHyH extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel menuPanel;
-    private javax.swing.JLabel tituloHuffman;
     // End of variables declaration//GEN-END:variables
 }
