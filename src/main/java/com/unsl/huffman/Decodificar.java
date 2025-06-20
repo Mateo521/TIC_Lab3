@@ -1,5 +1,5 @@
-
 package com.unsl.huffman;
+
 import static com.unsl.huffman.FilesClass.archivoCodificado;
 import static com.unsl.huffman.FilesClass.getExtensionFiles;
 import static com.unsl.huffman.FilesClass.obtenerNombre;
@@ -10,150 +10,136 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-
-
 public class Decodificar extends FilesClass {
-    
 
     public static File archivoTabla;
-  
 
     public static void descompactar() throws ClassNotFoundException {
-        decodificacion(FilesClass.abrirMensajeCodificado(),archivoTabla);
+        decodificacion(FilesClass.abrirMensajeCodificado(), archivoTabla);
     }
-    
-    
-  //SETS
-    
- public static void setArchivoTabla(String ruta){
-     
-      String nombreArchivo= obtenerNombre(archivoCodificado);
-      nombreArchivo = nombreArchivo.concat("_tabla.txt");
-        archivoTabla= new File(nombreArchivo);
- }
- 
-  public static void setArchivoDecodificado(String ruta){
-     archivoDecodificado = ruta;
- }
-  
-  
+
+    //SETS
+    public static void setArchivoTabla(String ruta) {
+
+        String nombreArchivo = obtenerNombre(archivoCodificado);
+        nombreArchivo = nombreArchivo.concat("_tabla.txt");
+        archivoTabla = new File(nombreArchivo);
+    }
+
+    public static void setArchivoDecodificado(String ruta) {
+        archivoDecodificado = ruta;
+    }
+
 //SELECCIONAR ARCHIVO PARA DFSCOMPACTAR
-    public static void SelectArchivo(){
-        
+    public static void SelectArchivo() {
+
         JFileChooser jf = new JFileChooser(); //crea objeto de tipo FileChooser
-        FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.HUF","huf"); //crea filtro 
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos .HUF, .DE1, .DE2, .DE3, .DC1, .DC2, .DC3",  "huf", "DE1", "DE2", "DE3", "DC1", "DC2", "DC3");
+
         jf.setFileFilter(filtro); //filtra archivos 
         int select = jf.showOpenDialog(jf); //abre ventana
-        
-        if(select == JFileChooser.APPROVE_OPTION){
+
+        if (select == JFileChooser.APPROVE_OPTION) {
             String ex = getExtensionFiles(jf.getSelectedFile().getAbsolutePath());
-            
-         
-          if( !controlExtensionSalida(ex) ){ //Si igualmente se selecciona un archivo que no es .txt, muestra mensaje de error
-              JOptionPane.showMessageDialog(null, "Debe seleccionar un archivo con extensión .huf", "Extensión inválida", JOptionPane.ERROR_MESSAGE);
-              
-          }else{
-              String ruta = jf.getSelectedFile().getAbsolutePath();
-              String nuevaRuta=ruta;
-                 
-              setArchivoCodificado(ruta);
-              nuevaRuta=nuevaRuta.replace(".huf", ".dhu");
-              
-              setArchivoDecodificado(nuevaRuta);
-              setArchivoTabla(archivoCodificado);
-          }
-        }else{
+
+            if (!controlExtensionSalida(ex)) { // Si igualmente se selecciona un archivo que no es válido, muestra mensaje de error
+                JOptionPane.showMessageDialog(null, "Debe seleccionar un archivo con una extensión válida (.huf, .DE1, .DE2, .DE3, .DC1, .DC2, .DC3)",
+                        "Extensión inválida", JOptionPane.ERROR_MESSAGE);
+            } else {
+                String ruta = jf.getSelectedFile().getAbsolutePath();
+                String nuevaRuta = ruta;
+
+                setArchivoCodificado(ruta);
+                nuevaRuta = nuevaRuta.replace(".huf", ".dhu");
+
+                setArchivoDecodificado(nuevaRuta);
+                setArchivoTabla(archivoCodificado);
+            }
+        } else {
             JOptionPane.showMessageDialog(null, "No se seleccionó ningun archivo.", "", JOptionPane.ERROR_MESSAGE);
         }
-        
-    }  
- 
-    
+
+    }
+
 //DESCOMPACTA EL ARCHIVO    
-public static void decodificacion(byte[] mensajeCodificado,File filePath) throws ClassNotFoundException {
+    public static void decodificacion(byte[] mensajeCodificado, File filePath) throws ClassNotFoundException {
         try {
-            int[] size ={0};
+            int[] size = {0};
             FileOutputStream archivo = new FileOutputStream(archivoDecodificado);
-            
-            Map<Character,String> dictHuffman = leerDiccionario(filePath,size);
-            Map<String,Character> dictHuffmanInv = invertirDiccionario(dictHuffman);
+
+            Map<Character, String> dictHuffman = leerDiccionario(filePath, size);
+            Map<String, Character> dictHuffmanInv = invertirDiccionario(dictHuffman);
             String bit = "";
             long fileSizeCopy = 0;
             for (int i = 0; i < mensajeCodificado.length; i++) {
-                char elemento =(char) mensajeCodificado[i];
-            for (int j = 0; j < 8; j++) {
-            fileSizeCopy = archivo.getChannel().position();
-            if(size[0] > fileSizeCopy){
-                
-                
-            int bitAux = elemento & 128;
-            bitAux = bitAux >> 7;
-            
-            
-            bit = bit + String.valueOf(bitAux);
-            if (dictHuffmanInv.containsKey(bit)) {
-                char byteArr = dictHuffmanInv.get(bit);
-                archivo.write(byteArr);
-                bit = "";
+                char elemento = (char) mensajeCodificado[i];
+                for (int j = 0; j < 8; j++) {
+                    fileSizeCopy = archivo.getChannel().position();
+                    if (size[0] > fileSizeCopy) {
+
+                        int bitAux = elemento & 128;
+                        bitAux = bitAux >> 7;
+
+                        bit = bit + String.valueOf(bitAux);
+                        if (dictHuffmanInv.containsKey(bit)) {
+                            char byteArr = dictHuffmanInv.get(bit);
+                            archivo.write(byteArr);
+                            bit = "";
+                        }
+                        elemento = (char) (elemento & 127);
+                        elemento = (char) (elemento << 1);
+                    }
+                }
             }
-            elemento = (char)(elemento & 127);
-            elemento = (char)(elemento << 1);
-            }
-    }
-}
             archivo.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-    
-    
-
-public static Map<Character,String> leerDiccionario(File file,int[] size) throws IOException {
+    public static Map<Character, String> leerDiccionario(File file, int[] size) throws IOException {
         Map<Character, String> map = new HashMap<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            size[0]= Integer.parseInt(reader.readLine());
+            size[0] = Integer.parseInt(reader.readLine());
             String line;
             String[] entry;
-            if ((line = reader.readLine()) != null){
+            if ((line = reader.readLine()) != null) {
                 line = line.substring(1, line.length() - 1);
                 String[] keyValuePairs = line.split(",");
                 for (String pair : keyValuePairs) {
                     entry = pair.split("=");
                     if (entry.length == 2) {
-                        if(entry[0].trim().equals("")){
-                        map.put(' ',entry[1].trim());}
-                        else if(entry[0].trim().equals("\\\"")){
-                        map.put('"',entry[1].trim());}
-                        else if(entry[0].trim().equals("\\\\")){
-                        map.put('\\',entry[1].trim());}
-                        else if(entry[0].trim().equals("coma")){
-                        map.put(',',entry[1].trim());}
-                        else if(entry[0].trim().equals("igual")){
-                        map.put('=',entry[1].trim());}
-                        else if(entry[0].trim().equals("\\n")){
-                        map.put('\n',entry[1].trim());}
-                        else if(entry[0].trim().equals("\\r")){
-                        map.put('\r',entry[1].trim());}
-                        else if(entry[0].trim().equals("\\t")){
-                        map.put('\t',entry[1].trim());}
-                        else if(entry[0].trim().equals("\\b")){
-                        map.put('\b',entry[1].trim());}
-                        else if(entry[0].trim().equals("\\f")){
-                        map.put('\f',entry[1].trim());}
-                        else{
-                        map.put(entry[0].trim().charAt(0),entry[1].trim());}
+                        if (entry[0].trim().equals("")) {
+                            map.put(' ', entry[1].trim());
+                        } else if (entry[0].trim().equals("\\\"")) {
+                            map.put('"', entry[1].trim());
+                        } else if (entry[0].trim().equals("\\\\")) {
+                            map.put('\\', entry[1].trim());
+                        } else if (entry[0].trim().equals("coma")) {
+                            map.put(',', entry[1].trim());
+                        } else if (entry[0].trim().equals("igual")) {
+                            map.put('=', entry[1].trim());
+                        } else if (entry[0].trim().equals("\\n")) {
+                            map.put('\n', entry[1].trim());
+                        } else if (entry[0].trim().equals("\\r")) {
+                            map.put('\r', entry[1].trim());
+                        } else if (entry[0].trim().equals("\\t")) {
+                            map.put('\t', entry[1].trim());
+                        } else if (entry[0].trim().equals("\\b")) {
+                            map.put('\b', entry[1].trim());
+                        } else if (entry[0].trim().equals("\\f")) {
+                            map.put('\f', entry[1].trim());
+                        } else {
+                            map.put(entry[0].trim().charAt(0), entry[1].trim());
+                        }
                     }
                 }
+            }
+            return map;
         }
-        return map;
     }
-}
-    
-    
-    private static Map<String, Character> invertirDiccionario(Map<Character,String> diccionario) {
+
+    private static Map<String, Character> invertirDiccionario(Map<Character, String> diccionario) {
         Map<String, Character> invertedDict = new HashMap<>();
         for (Map.Entry<Character, String> entry : diccionario.entrySet()) {
             invertedDict.put(entry.getValue(), entry.getKey());
@@ -161,5 +147,4 @@ public static Map<Character,String> leerDiccionario(File file,int[] size) throws
         return invertedDict;
     }
 
-    
 }

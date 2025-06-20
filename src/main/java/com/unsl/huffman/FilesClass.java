@@ -41,9 +41,14 @@ public class FilesClass {
         return (ext.equals("txt") || ext.equals("docx"));
     }
 
-    public static Boolean controlExtensionSalida(String ext) { //Controla la extension sin errores
+    public static Boolean controlExtensionSalida(String ext) {
+     
+        ext = ext.toLowerCase();
 
-        return (ext.equals("huf"));
+      
+        return ext.equals("huf") || ext.equals("de1") || ext.equals("de2")
+                || ext.equals("de3") || ext.equals("dc1") || ext.equals("dc2")
+                || ext.equals("dc3");
     }
 
     public static String getExtensionFiles(String ruta) {
@@ -78,21 +83,17 @@ public class FilesClass {
         }
     }
 
-
-    
     public static String abrirMensajeOriginal() throws IOException {
-    String mensaje = "";
+        String mensaje = "";
 
-    if (archivoEntrada.endsWith(".docx")) {
-        mensaje = ReadDocxFile.readDocxFile(archivoEntrada);
-    } else {
-        mensaje = new String(Files.readAllBytes(Paths.get(archivoEntrada)));
+        if (archivoEntrada.endsWith(".docx")) {
+            mensaje = ReadDocxFile.readDocxFile(archivoEntrada);
+        } else {
+            mensaje = new String(Files.readAllBytes(Paths.get(archivoEntrada)));
+        }
+
+        return mensaje;
     }
-
- 
-    return mensaje.replaceAll("\\s+", "");
-}
-    
 
     public static byte[] abrirMensajeCodificado() {
         File aLeer = new File(archivoCodificado);

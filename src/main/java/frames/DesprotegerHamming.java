@@ -486,7 +486,7 @@ public class DesprotegerHamming extends javax.swing.JFrame {
             }
         }
 
-        // Marcar bit global si está mal
+     
         if (globalWrong) {
             html.append("<font color='orange'><b>").append(paridadGlobal).append("</b></font>");
         } else {
@@ -511,19 +511,12 @@ public class DesprotegerHamming extends javax.swing.JFrame {
         if (!Codificar.getArchivoEntrada().isEmpty()) {
             ruta_antes.setText(Codificar.getArchivoEntrada());
             try {
-                String textoPlanoOriginal = Codificar.abrirMensajeOriginal();
-
-                 
-                String textoSinSaltosNiEspacios = textoPlanoOriginal.replaceAll("[\\r\\n\\t ]+", "");
-
-               
-                ANTES.setText(textoSinSaltosNiEspacios);
-
+                String textoPlanoSinEspacios = Codificar.abrirMensajeOriginal().replaceAll("\\s+", "");
+                ANTES.setText(textoPlanoSinEspacios);
             } catch (IOException ex) {
                 Logger.getLogger(CompactFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
