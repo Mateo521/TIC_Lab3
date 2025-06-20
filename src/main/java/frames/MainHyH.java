@@ -4,9 +4,11 @@
  */
 package frames;
 
+import static com.unsl.hamming.Hamming.detectarYCorregirErrores;
 import static com.unsl.huffman.FilesClass.getExtensionFiles;
 import static com.unsl.huffman.FilesClass.setArchivoCodificado;
 import static com.unsl.huffman.FilesClass.setArchivoEntrada;
+import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -245,6 +247,12 @@ public class MainHyH extends javax.swing.JFrame {
         }
         //</editor-fold>
 
+        
+        
+     
+        
+        
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

@@ -78,25 +78,21 @@ public class FilesClass {
         }
     }
 
+
+    
     public static String abrirMensajeOriginal() throws IOException {
-        if (archivoEntrada.endsWith(".docx")) {
-            String mensaje = ReadDocxFile.readDocxFile(archivoEntrada);
-            return mensaje;
-        } else {
-            File aLeeraux = new File(archivoEntrada);
-            File aLeer = readFile(aLeeraux);
-            FileWriter writer = new FileWriter(aLeer, true);
-            writer.write(" ");
-            writer.close();
-            try {
-                byte[] mensaje = Files.readAllBytes(Paths.get(aLeer.getAbsolutePath()));
-                return new String(mensaje);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return "";
+    String mensaje = "";
+
+    if (archivoEntrada.endsWith(".docx")) {
+        mensaje = ReadDocxFile.readDocxFile(archivoEntrada);
+    } else {
+        mensaje = new String(Files.readAllBytes(Paths.get(archivoEntrada)));
     }
+
+ 
+    return mensaje.replaceAll("\\s+", "");
+}
+    
 
     public static byte[] abrirMensajeCodificado() {
         File aLeer = new File(archivoCodificado);

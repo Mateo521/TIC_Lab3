@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import com.unsl.hamming.Hamming;
 import static com.unsl.hamming.Hamming.bloquesToString;
 import static com.unsl.hamming.Hamming.calcularParidadGlobal;
+import static com.unsl.hamming.Hamming.calculateSyndromeGeneral;
 import static com.unsl.hamming.Hamming.cargarArchivoCodificado;
 import static com.unsl.hamming.Hamming.detectarYCorregirErrores;
 import static com.unsl.hamming.Hamming.extraerDatosSinCorreccion;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -67,8 +69,11 @@ public class DesprotegerHamming extends javax.swing.JFrame {
         ruta_antes = new javax.swing.JTextField();
         jSantes = new javax.swing.JScrollPane();
         ANTES = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        DESPUES = new javax.swing.JEditorPane();
         jScrollPane1 = new javax.swing.JScrollPane();
-        DESPUES = new javax.swing.JTextArea();
+        corregido = new javax.swing.JTextArea();
+        tituloHuffman1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
@@ -180,16 +185,22 @@ public class DesprotegerHamming extends javax.swing.JFrame {
 
         jPanel2.add(jSantes, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 350, 330));
 
-        DESPUES.setEditable(false);
-        DESPUES.setBackground(new java.awt.Color(255, 255, 255));
-        DESPUES.setColumns(20);
-        DESPUES.setLineWrap(true);
-        DESPUES.setRows(5);
-        DESPUES.setWrapStyleWord(true);
-        DESPUES.setBorder(null);
-        jScrollPane1.setViewportView(DESPUES);
+        jScrollPane2.setViewportView(DESPUES);
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 70, 350, 330));
+        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 70, 370, 160));
+
+        corregido.setColumns(20);
+        corregido.setRows(5);
+        jScrollPane1.setViewportView(corregido);
+
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 250, 370, 150));
+
+        tituloHuffman1.setBackground(new java.awt.Color(0, 102, 102));
+        tituloHuffman1.setFont(new java.awt.Font("OCR A Extended", 1, 14)); // NOI18N
+        tituloHuffman1.setForeground(new java.awt.Color(255, 255, 255));
+        tituloHuffman1.setText("Texto corregido");
+        tituloHuffman1.setToolTipText("");
+        jPanel2.add(tituloHuffman1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 230, 120, -1));
 
         background1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 980, 410));
 
@@ -287,6 +298,7 @@ public class DesprotegerHamming extends javax.swing.JFrame {
     }//GEN-LAST:event_desprotegerHMouseClicked
 
     private void desprotegerHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desprotegerHActionPerformed
+
         if (ruta_antes.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Debe seleccionar un archivo .HAx o .HEx", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
@@ -311,42 +323,55 @@ public class DesprotegerHamming extends javax.swing.JFrame {
 
     }//GEN-LAST:event_desprotegerHActionPerformed
 
-    public void decodificarConCorreccionGUI(String inputPath, JTextArea resultadoArea) {
+    public void decodificarConCorreccionGUI(String inputPath, JEditorPane resultadoArea) {
+
         try {
+            resultadoArea.setContentType("text/html");
             List<List<Integer>> bloques = cargarArchivoCodificado(inputPath);
             List<List<Integer>> bloquesCorregidos = new ArrayList<>();
-
             archivoOriginalCodificado = bloques;
             archivoDesprotegido = bloquesCorregidos;
 
-            StringBuilder resultadoTexto = new StringBuilder();
+            StringBuilder resultadoTexto = new StringBuilder("<html><body style='font-family:monospace;'>");
 
             for (int i = 0; i < bloques.size(); i++) {
                 List<Integer> bloque = bloques.get(i);
                 List<Integer> corregido = detectarYCorregirErrores(bloque);
-                bloquesCorregidos.add(corregido);
 
-                resultadoTexto.append("Bloque ").append(i + 1).append(":\n");
-                resultadoTexto.append("Original: ").append(bloque.toString()).append("\n");
-                resultadoTexto.append("Corregido: ").append(corregido.toString()).append("\n\n");
+                // Comparar bloque original con corregido (mismos tamaños)
+                StringBuilder bloqueHtml = new StringBuilder();
+                for (int j = 0; j < bloque.size(); j++) {
+                    int originalBit = bloque.get(j);
+                    int corregidoBit = corregido.get(j);
+                    if (originalBit != corregidoBit) {
+                        bloqueHtml.append("<span style='background-color: #90ee90;'>")
+                                .append(corregidoBit)
+                                .append("</span>");
+                    } else {
+                        bloqueHtml.append(corregidoBit);
+                    }
+                }
 
+                resultadoTexto.append(bloqueHtml).append(" ");
+
+                // Luego extraes los datos ya corregidos, sin bits de paridad
+                List<Integer> datos = extraerDatosSinCorreccion(corregido);
+                bloquesCorregidos.add(datos);
+
+                // Estadísticas
                 if (!bloque.equals(corregido)) {
                     erroresCorregidos++;
                 }
-
-                int globalParity = bloque.get(bloque.size() - 1);
-                int calculado = calcularParidadGlobal(bloque.subList(0, bloque.size() - 1));
-                if (globalParity != calculado) {
+                if (bloque.get(bloque.size() - 1) != calcularParidadGlobal(bloque.subList(0, bloque.size() - 1))) {
                     erroresDetectados++;
                 }
-
-                bloquesCorregidos.add(corregido);
-
             }
 
             String textoCorregido = bloquesToString(bloquesCorregidos, 8);
-            resultadoTexto.append("Texto corregido:\n").append(textoCorregido);
 
+            corregido.setText(textoCorregido);
+
+            // Guardar archivo decodificado
             String outputPath = inputPath.replace(".HA", ".DC").replace(".HE", ".DC");
             Files.write(Paths.get(outputPath), textoCorregido.getBytes());
 
@@ -358,33 +383,37 @@ public class DesprotegerHamming extends javax.swing.JFrame {
             );
 
             resultadoArea.setText(resultadoTexto.toString());
+            resultadoArea.setCaretPosition(0); // Mostrar desde el principio
             estadisticas.setEnabled(true);
-
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error al procesar el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+
     }
 
-    public void decodificarSinCorreccionGUI(String inputPath, JTextArea resultadoArea) {
+    public void decodificarSinCorreccionGUI(String inputPath, JEditorPane resultadoArea) {
         try {
+            resultadoArea.setContentType("text/html");
             List<List<Integer>> bloques = cargarArchivoCodificado(inputPath);
             List<List<Integer>> bloquesDecodificados = new ArrayList<>();
+            StringBuilder resultadoTexto = new StringBuilder("<html>");
 
-            StringBuilder resultadoTexto = new StringBuilder();
-
-            for (List<Integer> bloque : bloques) {
+            for (int i = 0; i < bloques.size(); i++) {
+                List<Integer> bloque = bloques.get(i);
                 int globalParity = bloque.get(bloque.size() - 1);
                 int calculado = calcularParidadGlobal(bloque.subList(0, bloque.size() - 1));
+                boolean errorDetectado = globalParity != calculado;
 
-                if (globalParity != calculado) {
-                    resultadoTexto.append("Advertencia: Error detectado en la paridad global\n");
-                }
+                resultadoTexto.append(bitsMarcandoErrorVisual(bloque)).append(" ");
 
                 List<Integer> datos = extraerDatosSinCorreccion(bloque);
                 bloquesDecodificados.add(datos);
             }
 
             String textoDecodificado = bloquesToString(bloquesDecodificados, 8);
+
+            corregido.setText(textoDecodificado);
+
             String outputPath = inputPath.replace(".HA", ".DE").replace(".HE", ".DE");
             Files.write(Paths.get(outputPath), textoDecodificado.getBytes());
 
@@ -395,13 +424,76 @@ public class DesprotegerHamming extends javax.swing.JFrame {
                     JOptionPane.INFORMATION_MESSAGE
             );
 
-            resultadoTexto.append("\nTexto decodificado:\n").append(textoDecodificado);
             resultadoArea.setText(resultadoTexto.toString());
-            estadisticas.setEnabled(true);
 
+            estadisticas.setEnabled(true);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error al procesar el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    private static String bitsConColor(List<Integer> original, List<Integer> corregido) {
+        StringBuilder sb = new StringBuilder("<code>");
+        for (int i = 0; i < original.size(); i++) {
+            if (!original.get(i).equals(corregido.get(i))) {
+                sb.append("<span style='color:red; font-weight:bold;'>").append(original.get(i)).append("</span>");
+            } else {
+                sb.append(original.get(i));
+            }
+        }
+        sb.append("</code>");
+        return sb.toString();
+    }
+
+    private static String bitsToHtml(List<Integer> bits) {
+        StringBuilder sb = new StringBuilder("<code>");
+        for (Integer bit : bits) {
+            sb.append(bit);
+        }
+        sb.append("</code>");
+        return sb.toString();
+    }
+
+    private static String bitsMarcandoParidadGlobal(List<Integer> bloque) {
+        StringBuilder sb = new StringBuilder("<code>");
+        for (int i = 0; i < bloque.size(); i++) {
+            if (i == bloque.size() - 1) {
+                sb.append("<span style='color:red; font-weight:bold;'>").append(bloque.get(i)).append("</span>");
+            } else {
+                sb.append(bloque.get(i));
+            }
+        }
+        sb.append("</code>");
+        return sb.toString();
+    }
+
+    public String bitsMarcandoErrorVisual(List<Integer> bloque) {
+        // Separar bits sin paridad global
+        List<Integer> sinGlobal = bloque.subList(0, bloque.size() - 1);
+        int paridadGlobal = bloque.get(bloque.size() - 1);
+
+        int syndrome = calculateSyndromeGeneral(sinGlobal);
+        int calculado = calcularParidadGlobal(sinGlobal);
+        boolean globalWrong = calculado != paridadGlobal;
+
+        StringBuilder html = new StringBuilder();
+
+        for (int i = 0; i < sinGlobal.size(); i++) {
+            if (syndrome != 0 && i == syndrome - 1) {
+                html.append("<font color='red'><b>").append(sinGlobal.get(i)).append("</b></font>");
+            } else {
+                html.append(sinGlobal.get(i));
+            }
+        }
+
+        // Marcar bit global si está mal
+        if (globalWrong) {
+            html.append("<font color='orange'><b>").append(paridadGlobal).append("</b></font>");
+        } else {
+            html.append(paridadGlobal);
+        }
+
+        return html.toString();
     }
 
 
@@ -418,9 +510,15 @@ public class DesprotegerHamming extends javax.swing.JFrame {
 
         if (!Codificar.getArchivoEntrada().isEmpty()) {
             ruta_antes.setText(Codificar.getArchivoEntrada());
-
             try {
-                ANTES.setText(Codificar.abrirMensajeOriginal());
+                String textoPlanoOriginal = Codificar.abrirMensajeOriginal();
+
+                 
+                String textoSinSaltosNiEspacios = textoPlanoOriginal.replaceAll("[\\r\\n\\t ]+", "");
+
+               
+                ANTES.setText(textoSinSaltosNiEspacios);
+
             } catch (IOException ex) {
                 Logger.getLogger(CompactFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -505,8 +603,9 @@ public class DesprotegerHamming extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea ANTES;
-    private javax.swing.JTextArea DESPUES;
+    private javax.swing.JEditorPane DESPUES;
     private javax.swing.JPanel background1;
+    private javax.swing.JTextArea corregido;
     private javax.swing.JButton desprotegerH;
     private javax.swing.JButton estadisticas;
     private javax.swing.JButton exitB1;
@@ -519,8 +618,10 @@ public class DesprotegerHamming extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jSantes;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField ruta_antes;
     private javax.swing.JLabel tituloHuffman;
+    private javax.swing.JLabel tituloHuffman1;
     private javax.swing.JButton volver;
     // End of variables declaration//GEN-END:variables
 }

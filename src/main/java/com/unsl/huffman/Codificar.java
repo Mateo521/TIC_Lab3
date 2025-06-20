@@ -79,7 +79,7 @@ public class Codificar extends FilesClass {
 
         try {
             String contenido = new String(Files.readAllBytes(Paths.get(ruta)));
-            vistaPrevia.setText(contenido);
+            vistaPrevia.setText(contenido.replaceAll("\\s+", ""));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error al leer el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
