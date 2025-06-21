@@ -57,35 +57,38 @@ public class Codificar extends FilesClass {
         }
 
     }
-    
-    
-    public static void seleccionarArchivoConFiltro(String[] extensionesPermitidas, String descripcion, JTextField rutaField, JTextArea vistaPrevia) {
-    JFileChooser jf = new JFileChooser();
-    FileNameExtensionFilter filtro = new FileNameExtensionFilter(descripcion, extensionesPermitidas);
-    jf.setFileFilter(filtro);
-    
-    int select = jf.showOpenDialog(jf);
-    if (select == JFileChooser.APPROVE_OPTION) {
-        String ruta = jf.getSelectedFile().getAbsolutePath();
-        String extension = Codificar.getExtensionFiles(ruta); // puedes mover esta función si quieres desacoplar más
 
-        boolean permitido = Arrays.stream(extensionesPermitidas).anyMatch(ext -> extension.equalsIgnoreCase(ext));
-        if (!permitido) {
-            JOptionPane.showMessageDialog(null, "Archivo inválido", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+    public static void seleccionarArchivoConFiltro(String[] extensionesPermitidas, String descripcion, JTextField rutaField, JTextArea vistaPrevia, int co) {
+        JFileChooser jf = new JFileChooser();
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter(descripcion, extensionesPermitidas);
+        jf.setFileFilter(filtro);
 
-        rutaField.setText(ruta);
+        int select = jf.showOpenDialog(jf);
+        if (select == JFileChooser.APPROVE_OPTION) {
+            String ruta = jf.getSelectedFile().getAbsolutePath();
+            String extension = Codificar.getExtensionFiles(ruta); // puedes mover esta función si quieres desacoplar más
 
-        try {
-            String contenido = new String(Files.readAllBytes(Paths.get(ruta)));
-            vistaPrevia.setText(contenido.replaceAll("\\s+", ""));
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error al leer el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            boolean permitido = Arrays.stream(extensionesPermitidas).anyMatch(ext -> extension.equalsIgnoreCase(ext));
+            if (!permitido) {
+                JOptionPane.showMessageDialog(null, "Archivo inválido", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            rutaField.setText(ruta);
+
+            try {
+                String contenido = new String(Files.readAllBytes(Paths.get(ruta)));
+                if (co == 1) {
+                    vistaPrevia.setText(contenido.replaceAll("\\s+", ""));
+                } else {
+                    vistaPrevia.setText(contenido);
+                }
+
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Error al leer el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
-}
-
 
     //COMPACTA EL ARCHIVO
     public static void codificacion(String mensaje, long size) throws IOException {
@@ -101,7 +104,7 @@ public class Codificar extends FilesClass {
         }
         /*
 System.out.println("Bytes estimados: " + (text.length() / 8.0));
-*/
+         */
         for (int j = 0; j < text.length(); j++) {
             binario = (binario << 1) | (text.charAt(j) - '0');
             if (j % 8 == 7) {
@@ -114,17 +117,17 @@ System.out.println("Bytes estimados: " + (text.length() / 8.0));
             binario = binario << (8 - restantes);
             archivo.write(binario);
         }
+        
+        
+        
         archivo.close();
     }
 
-    public static void generarArchivoExtra(Map<Character, String> dictHuffman, long size) throws IOException {
-        File nuevo = new File(archivoTabla);
-        FileWriter archivo = new FileWriter(nuevo);
-        archivo.write(String.valueOf(size));
-        archivo.write('\n');
-        String aux = escapeMapToString(dictHuffman);
-        archivo.write(aux);
-        archivo.close();
+    public static void generarArchivoExtra(Map<Character, String> diccionario, long size) throws IOException {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivoTabla))) {
+            oos.writeLong(size); // Guarda el tamaño como binario
+            oos.writeObject(diccionario); // Guarda el diccionario como objeto
+        }
     }
 
     public static String escapeMapToString(Map<Character, String> map) {

@@ -414,7 +414,7 @@ public void procesarProteccionHamming(String inputPath, int opcionBloque, int op
                 new String[]{"txt", "docx", "huf"},
                 "Archivos .txt, .docx o .huf",
                 ruta_antes,
-                ANTES
+                ANTES,0
         );
 
         if (!Codificar.getArchivoEntrada().isEmpty()) {

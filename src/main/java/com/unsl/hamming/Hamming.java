@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -517,14 +518,49 @@ public class Hamming {
             }
 
             String outputPath = filePath.replace(".HA", ".DE").replace(".HE", ".DE");
+            
+            
+            /*
             String decodedText = blocksToString(decodedBlocks, 8);
             Files.write(Paths.get(outputPath), decodedText.getBytes());
+            */
+            byte[] decodedBytes = blocksToBytes(decodedBlocks); // <- Necesitamos esta función
+            Files.write(Paths.get(outputPath), decodedBytes);
+
+            
+            
 
             System.out.println("Archivo decodificado guardado como: " + outputPath);
         } catch (IOException e) {
             System.out.println("Error al procesar el archivo: " + e.getMessage());
         }
     }
+    
+    
+    public static byte[] blocksToBytes(List<List<Integer>> blocks) {
+    List<Integer> allBits = new ArrayList<>();
+    for (List<Integer> block : blocks) {
+        allBits.addAll(block);
+    }
+
+    int byteCount = (allBits.size() + 7) / 8;
+    byte[] result = new byte[byteCount];
+
+    for (int i = 0; i < allBits.size(); i++) {
+        int byteIndex = i / 8;
+        result[byteIndex] <<= 1;
+        result[byteIndex] |= allBits.get(i);
+    }
+
+    // Rellenar los bits restantes del último byte con ceros
+    int remainingBits = allBits.size() % 8;
+    if (remainingBits != 0) {
+        result[byteCount - 1] <<= (8 - remainingBits);
+    }
+
+    return result;
+}
+
 
     public static void decodificarConCorreccion(Scanner scanner) {
         System.out.print("Ingrese la ruta del archivo .HAx o .HEx: ");
@@ -550,13 +586,15 @@ public class Hamming {
             }
 
             // Convertir a texto y mostrar resultado
-            String TextoCorregido = bloquesToString(BloquesCorregidos, 8);
-            System.out.println("\nTexto corregido: " + TextoCorregido);
-            System.out.println("Bytes del texto corregido: " + bytesToHex(TextoCorregido.getBytes()));
+            byte[] TextoCorregido = blocksToBytes(BloquesCorregidos);
+            
+          
+            
+            
+            System.out.println("\nTexto corregido: " + Arrays.toString(TextoCorregido));
 
             String outputPath = filePath.replace(".HA", ".DC").replace(".HE", ".DC");
-            Files.write(Paths.get(outputPath), TextoCorregido.getBytes());
-
+            Files.write(Paths.get(outputPath), TextoCorregido);
             System.out.println("Archivo corregido guardado como: " + outputPath);
         } catch (IOException e) {
             System.out.println("Error al procesar el archivo: " + e.getMessage());

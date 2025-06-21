@@ -6,6 +6,7 @@ package frames;
 
 import javax.swing.JOptionPane;
 import com.unsl.hamming.Hamming;
+import static com.unsl.hamming.Hamming.blocksToBytes;
 import static com.unsl.hamming.Hamming.bloquesToString;
 import static com.unsl.hamming.Hamming.calcularParidadGlobal;
 import static com.unsl.hamming.Hamming.calculateSyndromeGeneral;
@@ -20,6 +21,7 @@ import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -367,13 +369,15 @@ public class DesprotegerHamming extends javax.swing.JFrame {
                 }
             }
 
-            String textoCorregido = bloquesToString(bloquesCorregidos, 8);
+            byte[] textoCorregido = blocksToBytes(bloquesCorregidos);
 
-            corregido.setText(textoCorregido);
+            String texto = new String(textoCorregido, StandardCharsets.UTF_8);
+
+            corregido.setText(texto);
 
             // Guardar archivo decodificado
             String outputPath = inputPath.replace(".HA", ".DC").replace(".HE", ".DC");
-            Files.write(Paths.get(outputPath), textoCorregido.getBytes());
+            Files.write(Paths.get(outputPath), textoCorregido);
 
             JOptionPane.showMessageDialog(
                     null,
@@ -410,12 +414,15 @@ public class DesprotegerHamming extends javax.swing.JFrame {
                 bloquesDecodificados.add(datos);
             }
 
-            String textoDecodificado = bloquesToString(bloquesDecodificados, 8);
+            byte[] textoDecodificado = blocksToBytes(bloquesDecodificados);
 
-            corregido.setText(textoDecodificado);
+            String texto = new String(textoDecodificado, StandardCharsets.UTF_8);
+
+            corregido.setText(texto);
 
             String outputPath = inputPath.replace(".HA", ".DE").replace(".HE", ".DE");
-            Files.write(Paths.get(outputPath), textoDecodificado.getBytes());
+
+            Files.write(Paths.get(outputPath), textoDecodificado);
 
             JOptionPane.showMessageDialog(
                     null,
@@ -486,7 +493,6 @@ public class DesprotegerHamming extends javax.swing.JFrame {
             }
         }
 
-     
         if (globalWrong) {
             html.append("<font color='orange'><b>").append(paridadGlobal).append("</b></font>");
         } else {
@@ -505,7 +511,7 @@ public class DesprotegerHamming extends javax.swing.JFrame {
                 new String[]{"HA1", "HA2", "HA3", "HE1", "HE2", "HE3"},
                 "Archivos .HA1, .HA2 , .HA3 .HE1, .HE2 , .HE3",
                 ruta_antes,
-                ANTES
+                ANTES, 1
         );
 
         if (!Codificar.getArchivoEntrada().isEmpty()) {
