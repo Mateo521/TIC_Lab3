@@ -343,17 +343,69 @@ public class Hamming {
         }
     }
 
+  
+    
     public static void guardarArchivoCodificado(List<List<Integer>> bloques, String filePath) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        for (List<Integer> bloque : bloques) {
-            for (Integer bit : bloque) {
-                sb.append(bit);
+    List<Byte> byteList = new ArrayList<>();
+    int bitCount = 0;
+    int currentByte = 0;
+
+    for (List<Integer> bloque : bloques) {
+        for (int bit : bloque) {
+            currentByte = (currentByte << 1) | bit;
+            bitCount++;
+            if (bitCount == 8) {
+                byteList.add((byte) currentByte);
+                currentByte = 0;
+                bitCount = 0;
             }
-            sb.append("\n");
         }
-        Files.write(Paths.get(filePath), sb.toString().getBytes());
     }
 
+    // Rellenar el último byte si quedó incompleto
+    if (bitCount > 0) {
+        currentByte = currentByte << (8 - bitCount);
+        byteList.add((byte) currentByte);
+    }
+
+    byte[] byteArray = new byte[byteList.size()];
+    for (int i = 0; i < byteList.size(); i++) {
+        byteArray[i] = byteList.get(i);
+    }
+
+    Files.write(Paths.get(filePath), byteArray);
+}
+    
+
+    
+    
+    public static List<List<Integer>> cargarArchivoCodificadoBinario(String filePath, int bitsPorBloque) throws IOException {
+    byte[] data = Files.readAllBytes(Paths.get(filePath));
+    List<Integer> todosLosBits = new ArrayList<>();
+
+    for (byte b : data) {
+        for (int i = 7; i >= 0; i--) {
+            int bit = (b >> i) & 1;
+            todosLosBits.add(bit);
+        }
+    }
+
+    List<List<Integer>> bloques = new ArrayList<>();
+    for (int i = 0; i < todosLosBits.size(); i += bitsPorBloque) {
+        if (i + bitsPorBloque <= todosLosBits.size()) {
+            List<Integer> bloque = new ArrayList<>(todosLosBits.subList(i, i + bitsPorBloque));
+            bloques.add(bloque);
+        } else {
+            // Bloque incompleto al final, puedes ignorarlo o lanzar error
+            System.err.println("Bloque incompleto ignorado.");
+        }
+    }
+
+    return bloques;
+}
+    
+    
+    
     public static List<List<Integer>> cargarArchivoCodificado(String filePath) throws IOException {
         List<List<Integer>> bloques = new ArrayList<>();
         List<String> lines = Files.readAllLines(Paths.get(filePath));

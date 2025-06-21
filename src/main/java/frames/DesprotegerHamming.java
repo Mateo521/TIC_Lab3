@@ -11,6 +11,7 @@ import static com.unsl.hamming.Hamming.bloquesToString;
 import static com.unsl.hamming.Hamming.calcularParidadGlobal;
 import static com.unsl.hamming.Hamming.calculateSyndromeGeneral;
 import static com.unsl.hamming.Hamming.cargarArchivoCodificado;
+import static com.unsl.hamming.Hamming.cargarArchivoCodificadoBinario;
 import static com.unsl.hamming.Hamming.detectarYCorregirErrores;
 import static com.unsl.hamming.Hamming.extraerDatosSinCorreccion;
 import static com.unsl.hamming.Hamming.guardarArchivoCodificado;
@@ -329,7 +330,9 @@ public class DesprotegerHamming extends javax.swing.JFrame {
 
         try {
             resultadoArea.setContentType("text/html");
-            List<List<Integer>> bloques = cargarArchivoCodificado(inputPath);
+            int bloqueTamanio = deducirTamanioBloqueDesdeExtension(inputPath);
+            List<List<Integer>> bloques = cargarArchivoCodificadoBinario(inputPath, bloqueTamanio);
+
             List<List<Integer>> bloquesCorregidos = new ArrayList<>();
             archivoOriginalCodificado = bloques;
             archivoDesprotegido = bloquesCorregidos;
@@ -395,10 +398,27 @@ public class DesprotegerHamming extends javax.swing.JFrame {
 
     }
 
+    private int deducirTamanioBloqueDesdeExtension(String path) {
+        if (path.endsWith(".HA1") || path.endsWith(".HE1")) {
+            return 8;
+        }
+        if (path.endsWith(".HA2") || path.endsWith(".HE2")) {
+            return 256;
+        }
+        if (path.endsWith(".HA3") || path.endsWith(".HE3")) {
+            return 4096;
+        }
+
+        throw new IllegalArgumentException("Extensión de archivo no válida o no reconocida: " + path);
+    }
+
     public void decodificarSinCorreccionGUI(String inputPath, JEditorPane resultadoArea) {
         try {
             resultadoArea.setContentType("text/html");
-            List<List<Integer>> bloques = cargarArchivoCodificado(inputPath);
+
+            int bloqueTamanio = deducirTamanioBloqueDesdeExtension(inputPath);
+            List<List<Integer>> bloques = cargarArchivoCodificadoBinario(inputPath, bloqueTamanio);
+
             List<List<Integer>> bloquesDecodificados = new ArrayList<>();
             StringBuilder resultadoTexto = new StringBuilder("<html>");
 
