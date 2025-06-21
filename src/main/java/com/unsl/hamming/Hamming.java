@@ -34,7 +34,7 @@ public class Hamming {
 
     public static List<Integer> detectarYCorregirErrores(List<Integer> fullEncodedBlock) {
         if (fullEncodedBlock == null || fullEncodedBlock.size() < 8) {
-            System.out.println("[ERROR] Bloque demasiado pequeño");
+            System.out.println("[ERROR] Bloque menor a 8 bits");
             return new ArrayList<>(fullEncodedBlock);
         }
 
@@ -46,18 +46,18 @@ public class Hamming {
 
         int syndrome = calculateSyndromeGeneral(hammingBlock);
 
-        System.out.println("Syndrome: " + syndrome
+        System.out.println("Sindrome: " + syndrome
                 + ", Paridad global: "
-                + (receivedGlobalParity == computedGlobalParity ? "válida" : "inválida"));
+                + (receivedGlobalParity == computedGlobalParity ? "valida" : "invalida"));
 
         // Corregir si posible
         if (syndrome != 0 && receivedGlobalParity != computedGlobalParity) {
             int errorPos = syndrome - 1; // índice 0-based
             if (errorPos >= 0 && errorPos < hammingBlock.size()) {
                 hammingBlock.set(errorPos, 1 - hammingBlock.get(errorPos));
-                System.out.println("[CORREGIDO] Bit corregido en posición " + errorPos);
+                System.out.println("[CORREGIDO] Bit corregido en posicion " + errorPos);
             } else {
-                System.out.println("[ERROR] Posición de error fuera de rango");
+                System.out.println("[ERROR] Posicion de error fuera de rango");
             }
         } else if (syndrome != 0) {
             System.out.println("[ERROR] Error no corregible (2 bits)");
