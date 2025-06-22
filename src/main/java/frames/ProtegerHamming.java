@@ -455,7 +455,7 @@ public void procesarProteccionHamming(String inputPath, int opcionBloque, int op
 
        
         List<Integer> firstBlock = archivoProtegido.get(0);
-        int originalBlockSize = firstBlock.size() - calcularParidadBitsHamming(firstBlock.size()) - 1; // -1 for global bit
+        int originalBlockSize = firstBlock.size() - calcularParidadBitsHamming(firstBlock.size()); // -1 for global bit
         int protectedBlockSize = firstBlock.size();
 
      

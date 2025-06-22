@@ -9,6 +9,7 @@ package com.unsl.hamming;
  * @author mateo
  */
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -304,6 +305,55 @@ public class Hamming {
         return sb.toString();
     }
 
+    public static List<Integer> extraerDatosConCorreccion(List<Integer> receivedData) {
+    List<Integer> data = new ArrayList<>(receivedData);
+    int longitud = data.size();
+
+    // Separar el bit de paridad global
+    int paridadGlobalRecibida = data.remove(longitud - 1);
+
+    // Detectar error usando bits de paridad locales (Hamming)
+    int errorPos = 0;
+    for (int i = 0; Math.pow(2, i) < data.size() + 1; i++) {
+        int pos = (int) Math.pow(2, i);
+        int parity = 0;
+
+        for (int j = 1; j <= data.size(); j++) {
+            if (((j >> i) & 1) == 1) {
+                parity ^= data.get(j - 1);
+            }
+        }
+
+        if (parity != 0) {
+            errorPos += pos;
+        }
+    }
+
+    // Verificar paridad global
+    int calculadaParidadGlobal = 0;
+    for (int bit : data) {
+        calculadaParidadGlobal ^= bit;
+    }
+    calculadaParidadGlobal ^= paridadGlobalRecibida;
+
+    // Si la paridad global también indica error y hay una posición con error → corregir
+    if (calculadaParidadGlobal != 0 && errorPos != 0) {
+        if (errorPos <= data.size()) {
+            data.set(errorPos - 1, data.get(errorPos - 1) ^ 1); // corregir bit
+        }
+        // Si errorPos > data.size(), no se puede corregir, fuera de rango
+    }
+
+    // Extraer solo los bits de datos (excluyendo posiciones de paridad)
+    List<Integer> datosCorregidos = new ArrayList<>();
+    for (int i = 0; i < data.size(); i++) {
+        if (!esPotenciaDeDos(i + 1)) {
+            datosCorregidos.add(data.get(i));
+        }
+    }
+
+    return datosCorregidos;
+}
     // Extrae los bits de datos sin corregir errores
     public static List<Integer> extraerDatosSinCorreccion(List<Integer> receivedData) {
         List<Integer> dataWithoutParity = new ArrayList<>();
@@ -490,7 +540,7 @@ public class Hamming {
 
         for (int i = 0; i < bloques.size(); i++) {
             List<Integer> bloque = bloques.get(i);
-            if (random.nextDouble() < 0.5) { // 50% de probabilidad de error por bloque
+            if (random.nextDouble() < 0.4) { // % de probabilidad de error por bloque
                 int position = random.nextInt(bloque.size());
                 int originalBit = bloque.get(position);
                 bloque.set(position, 1 - originalBit); // Cambiar 0 a 1 o 1 a 0
@@ -498,9 +548,7 @@ public class Hamming {
                 System.out.printf("Bloque %d: Error introducido en posicion %d (cambio de %d a %d)\n",
                         i + 1, position, originalBit, bloque.get(position));
 
-                // Verificar que el error es detectable
-                /*   System.out.printf("Verificacion de paridad despues del error en bloque %d: %s\n",
-                i+1, verificarCodigoVerificado(bloque) ? "valido" : "error detectado"); */
+
             } else {
                 System.out.printf("Bloque %d: Sin cambios\n", i + 1);
             }
@@ -589,28 +637,34 @@ public class Hamming {
     }
     
     
-    public static byte[] blocksToBytes(List<List<Integer>> blocks) {
+    // En Hamming.java, verificar la conversión bits-bytes
+public static byte[] blocksToBytes(List<List<Integer>> blocks) {
     List<Integer> allBits = new ArrayList<>();
     for (List<Integer> block : blocks) {
         allBits.addAll(block);
     }
-
-    int byteCount = (allBits.size() + 7) / 8;
-    byte[] result = new byte[byteCount];
-
-    for (int i = 0; i < allBits.size(); i++) {
-        int byteIndex = i / 8;
-        result[byteIndex] <<= 1;
-        result[byteIndex] |= allBits.get(i);
+    
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    int byteValue = 0;
+    int bitCount = 0;
+    
+    for (int bit : allBits) {
+        byteValue = (byteValue << 1) | bit;
+        bitCount++;
+        if (bitCount == 8) {
+            outputStream.write(byteValue);
+            byteValue = 0;
+            bitCount = 0;
+        }
     }
-
-    // Rellenar los bits restantes del último byte con ceros
-    int remainingBits = allBits.size() % 8;
-    if (remainingBits != 0) {
-        result[byteCount - 1] <<= (8 - remainingBits);
+    
+    // Manejar bits sobrantes
+    if (bitCount > 0) {
+        byteValue <<= (8 - bitCount); // Alinear a la izquierda
+        outputStream.write(byteValue);
     }
-
-    return result;
+    
+    return outputStream.toByteArray();
 }
 
 

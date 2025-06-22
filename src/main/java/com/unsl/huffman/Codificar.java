@@ -99,6 +99,12 @@ public class Codificar extends FilesClass {
         generarArchivoExtra(dictHuffman, size);
         int binario = 0;
         String text = "";
+        // Asegurarse de que todos los caracteres tienen código
+    for (char c : mensaje.toCharArray()) {
+        if (!dictHuffman.containsKey(c)) {
+            throw new IOException("Carácter sin código Huffman: " + c);
+        }
+    }
         for (int i = 0; i < mensaje.length(); i++) {
             text = text + dictHuffman.get(mensaje.charAt(i));
         }

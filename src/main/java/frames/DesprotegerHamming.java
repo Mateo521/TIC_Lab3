@@ -13,6 +13,7 @@ import static com.unsl.hamming.Hamming.calculateSyndromeGeneral;
 import static com.unsl.hamming.Hamming.cargarArchivoCodificado;
 import static com.unsl.hamming.Hamming.cargarArchivoCodificadoBinario;
 import static com.unsl.hamming.Hamming.detectarYCorregirErrores;
+import static com.unsl.hamming.Hamming.extraerDatosConCorreccion;
 import static com.unsl.hamming.Hamming.extraerDatosSinCorreccion;
 import static com.unsl.hamming.Hamming.guardarArchivoCodificado;
 import static com.unsl.hamming.Hamming.procesoEnBloques;
@@ -329,55 +330,34 @@ public class DesprotegerHamming extends javax.swing.JFrame {
     public void decodificarConCorreccionGUI(String inputPath, JEditorPane resultadoArea) {
 
         try {
+
             resultadoArea.setContentType("text/html");
+
             int bloqueTamanio = deducirTamanioBloqueDesdeExtension(inputPath);
             List<List<Integer>> bloques = cargarArchivoCodificadoBinario(inputPath, bloqueTamanio);
 
-            List<List<Integer>> bloquesCorregidos = new ArrayList<>();
-            archivoOriginalCodificado = bloques;
-            archivoDesprotegido = bloquesCorregidos;
-
+            List<List<Integer>> bloquesDecodificados = new ArrayList<>();
             StringBuilder resultadoTexto = new StringBuilder("<html><body style='font-family:monospace;'>");
 
             for (int i = 0; i < bloques.size(); i++) {
                 List<Integer> bloque = bloques.get(i);
-                List<Integer> corregido = detectarYCorregirErrores(bloque);
+                int globalParity = bloque.get(bloque.size() - 1);
+                int calculado = calcularParidadGlobal(bloque.subList(0, bloque.size() - 1));
+                boolean errorDetectado = globalParity != calculado;
+                
 
-                // Comparar bloque original con corregido (mismos tamaños)
-                StringBuilder bloqueHtml = new StringBuilder();
-                for (int j = 0; j < bloque.size(); j++) {
-                    int originalBit = bloque.get(j);
-                    int corregidoBit = corregido.get(j);
-                    if (originalBit != corregidoBit) {
-                        bloqueHtml.append("<span style='background-color: #90ee90;'>")
-                                .append(corregidoBit)
-                                .append("</span>");
-                    } else {
-                        bloqueHtml.append(corregidoBit);
-                    }
-                }
+                resultadoTexto.append(bitsMarcandoCorreccionVisual(bloque)).append(" ");
 
-                resultadoTexto.append(bloqueHtml).append(" ");
-
-                // Luego extraes los datos ya corregidos, sin bits de paridad
-                List<Integer> datos = extraerDatosSinCorreccion(corregido);
-                bloquesCorregidos.add(datos);
-
-                // Estadísticas
-                if (!bloque.equals(corregido)) {
-                    erroresCorregidos++;
-                }
-                if (bloque.get(bloque.size() - 1) != calcularParidadGlobal(bloque.subList(0, bloque.size() - 1))) {
-                    erroresDetectados++;
-                }
+                List<Integer> datos = extraerDatosConCorreccion(bloque);
+                bloquesDecodificados.add(datos);
             }
 
-            byte[] textoCorregido = blocksToBytes(bloquesCorregidos);
+            byte[] textoCorregido = blocksToBytes(bloquesDecodificados);
 
             String texto = new String(textoCorregido, StandardCharsets.UTF_8);
 
             corregido.setText(texto);
-
+            
             // Guardar archivo decodificado
             String outputPath = inputPath.replace(".HA", ".DC").replace(".HE", ".DC");
             Files.write(Paths.get(outputPath), textoCorregido);
@@ -420,7 +400,7 @@ public class DesprotegerHamming extends javax.swing.JFrame {
             List<List<Integer>> bloques = cargarArchivoCodificadoBinario(inputPath, bloqueTamanio);
 
             List<List<Integer>> bloquesDecodificados = new ArrayList<>();
-            StringBuilder resultadoTexto = new StringBuilder("<html>");
+            StringBuilder resultadoTexto = new StringBuilder("<html><body style='font-family:monospace;'>");
 
             for (int i = 0; i < bloques.size(); i++) {
                 List<Integer> bloque = bloques.get(i);
@@ -493,7 +473,37 @@ public class DesprotegerHamming extends javax.swing.JFrame {
         sb.append("</code>");
         return sb.toString();
     }
+    
+            
+    public String bitsMarcandoCorreccionVisual(List<Integer> bloque) {
+        // Separar bits sin paridad global
+        List<Integer> sinGlobal = bloque.subList(0, bloque.size() - 1);
+        int paridadGlobal = bloque.get(bloque.size() - 1);
 
+        int syndrome = calculateSyndromeGeneral(sinGlobal);
+        int calculado = calcularParidadGlobal(sinGlobal);
+        boolean globalWrong = calculado != paridadGlobal;
+
+        StringBuilder html = new StringBuilder();
+
+        for (int i = 0; i < sinGlobal.size(); i++) {
+            if (syndrome != 0 && i == syndrome - 1) {
+                html.append("<span style='background-color: #90ee90;'>")
+                                .append(sinGlobal.get(i))
+                                .append("</span>");
+            } else {
+                html.append(sinGlobal.get(i));
+            }
+        }
+
+        if (globalWrong) {
+            html.append("<font color='orange'><b>").append(paridadGlobal).append("</b></font>");
+        } else {
+            html.append(paridadGlobal);
+        }
+
+        return html.toString();
+    }
     public String bitsMarcandoErrorVisual(List<Integer> bloque) {
         // Separar bits sin paridad global
         List<Integer> sinGlobal = bloque.subList(0, bloque.size() - 1);
