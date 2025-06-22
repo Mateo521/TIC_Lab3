@@ -6,6 +6,7 @@ package frames;
 
 import javax.swing.JOptionPane;
 import com.unsl.hamming.Hamming;
+import com.unsl.hamming.Hamming.ResultadoHamming;
 import static com.unsl.hamming.Hamming.blocksToBytes;
 import static com.unsl.hamming.Hamming.bloquesToString;
 import static com.unsl.hamming.Hamming.calcularParidadGlobal;
@@ -344,20 +345,29 @@ public class DesprotegerHamming extends javax.swing.JFrame {
                 int globalParity = bloque.get(bloque.size() - 1);
                 int calculado = calcularParidadGlobal(bloque.subList(0, bloque.size() - 1));
                 boolean errorDetectado = globalParity != calculado;
-                
+
+                if (errorDetectado) {
+                    erroresDetectados++;
+                }
 
                 resultadoTexto.append(bitsMarcandoCorreccionVisual(bloque)).append(" ");
 
-                List<Integer> datos = extraerDatosConCorreccion(bloque);
+                ResultadoHamming resultado = extraerDatosConCorreccion(bloque);
+                List<Integer> datos = resultado.datos;
+                if (resultado.huboCorreccion) {
+                    erroresCorregidos++;
+                }
                 bloquesDecodificados.add(datos);
             }
 
             byte[] textoCorregido = blocksToBytes(bloquesDecodificados);
 
+            this.archivoDesprotegido = bloquesDecodificados;
+
             String texto = new String(textoCorregido, StandardCharsets.UTF_8);
 
             corregido.setText(texto);
-            
+
             // Guardar archivo decodificado
             String outputPath = inputPath.replace(".HA", ".DC").replace(".HE", ".DC");
             Files.write(Paths.get(outputPath), textoCorregido);
@@ -372,6 +382,7 @@ public class DesprotegerHamming extends javax.swing.JFrame {
             resultadoArea.setText(resultadoTexto.toString());
             resultadoArea.setCaretPosition(0); // Mostrar desde el principio
             estadisticas.setEnabled(true);
+
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error al procesar el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -406,15 +417,27 @@ public class DesprotegerHamming extends javax.swing.JFrame {
                 List<Integer> bloque = bloques.get(i);
                 int globalParity = bloque.get(bloque.size() - 1);
                 int calculado = calcularParidadGlobal(bloque.subList(0, bloque.size() - 1));
+
                 boolean errorDetectado = globalParity != calculado;
+
+                if (errorDetectado) {
+                    erroresDetectados++;
+                }
+
+                ResultadoHamming resultado = extraerDatosConCorreccion(bloque); // ahora obtienes el objeto
+                List<Integer> datos = resultado.datos;                           // accedes a la lista de datos
+                if (resultado.huboCorreccion) {
+                    erroresCorregidos++; // contar solo si hubo una corrección real
+                }
 
                 resultadoTexto.append(bitsMarcandoErrorVisual(bloque)).append(" ");
 
-                List<Integer> datos = extraerDatosSinCorreccion(bloque);
                 bloquesDecodificados.add(datos);
             }
 
             byte[] textoDecodificado = blocksToBytes(bloquesDecodificados);
+
+            this.archivoDesprotegido = bloquesDecodificados;
 
             String texto = new String(textoDecodificado, StandardCharsets.UTF_8);
 
@@ -434,6 +457,7 @@ public class DesprotegerHamming extends javax.swing.JFrame {
             resultadoArea.setText(resultadoTexto.toString());
 
             estadisticas.setEnabled(true);
+
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error al procesar el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -473,8 +497,7 @@ public class DesprotegerHamming extends javax.swing.JFrame {
         sb.append("</code>");
         return sb.toString();
     }
-    
-            
+
     public String bitsMarcandoCorreccionVisual(List<Integer> bloque) {
         // Separar bits sin paridad global
         List<Integer> sinGlobal = bloque.subList(0, bloque.size() - 1);
@@ -489,8 +512,8 @@ public class DesprotegerHamming extends javax.swing.JFrame {
         for (int i = 0; i < sinGlobal.size(); i++) {
             if (syndrome != 0 && i == syndrome - 1) {
                 html.append("<span style='background-color: #90ee90;'>")
-                                .append(sinGlobal.get(i))
-                                .append("</span>");
+                        .append(sinGlobal.get(i))
+                        .append("</span>");
             } else {
                 html.append(sinGlobal.get(i));
             }
@@ -504,6 +527,7 @@ public class DesprotegerHamming extends javax.swing.JFrame {
 
         return html.toString();
     }
+
     public String bitsMarcandoErrorVisual(List<Integer> bloque) {
         // Separar bits sin paridad global
         List<Integer> sinGlobal = bloque.subList(0, bloque.size() - 1);
@@ -587,6 +611,24 @@ public class DesprotegerHamming extends javax.swing.JFrame {
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setPreferredSize(new Dimension(600, 400));
         JOptionPane.showMessageDialog(this, scrollPane, "Estadísticas de Decodificación", JOptionPane.INFORMATION_MESSAGE);
+
+        
+        HistorialEstadisticas.guardar(new EstadisticasArchivo(
+    EstadisticasArchivo.Tipo.DESPROTECCION,
+    "archivoDesprotegido", 
+    blockCount,
+    0, 
+    0,
+    bitsRecuperados,
+    erroresDetectados,
+    erroresCorregidos,
+    tasaRecuperacion,
+    0 // overhead no aplica
+));
+        
+        
+        erroresDetectados = 0;
+        erroresCorregidos = 0;
 
     }//GEN-LAST:event_estadisticasActionPerformed
 

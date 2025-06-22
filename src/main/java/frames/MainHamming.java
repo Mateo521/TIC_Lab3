@@ -4,6 +4,13 @@
  */
 package frames;
 
+import java.awt.Dimension;
+import java.awt.Font;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
 /**
  *
  * @author mateo
@@ -14,7 +21,7 @@ public class MainHamming extends javax.swing.JFrame {
      * Creates new form Main
      */
     public MainHamming() {
-               setUndecorated(true);
+        setUndecorated(true);
         initComponents();
         this.setLocationRelativeTo(null);
     }
@@ -34,6 +41,8 @@ public class MainHamming extends javax.swing.JFrame {
         CompactB = new javax.swing.JButton();
         DescB = new javax.swing.JButton();
         tituloHuffman = new javax.swing.JLabel();
+        historial = new javax.swing.JButton();
+        historial1 = new javax.swing.JButton();
         exitB = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         volver = new javax.swing.JButton();
@@ -95,36 +104,79 @@ public class MainHamming extends javax.swing.JFrame {
         tituloHuffman.setText("HAMMING");
         tituloHuffman.setToolTipText("");
 
+        historial.setBackground(new java.awt.Color(0, 153, 153));
+        historial.setFont(new java.awt.Font("OCR A Extended", 0, 26)); // NOI18N
+        historial.setForeground(new java.awt.Color(255, 255, 255));
+        historial.setText("Historial");
+        historial.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        historial.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        historial.setMaximumSize(new java.awt.Dimension(336, 36));
+        historial.setMinimumSize(new java.awt.Dimension(336, 36));
+        historial.setPreferredSize(new java.awt.Dimension(336, 36));
+        historial.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                historialMouseClicked(evt);
+            }
+        });
+        historial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                historialActionPerformed(evt);
+            }
+        });
+
+        historial1.setBackground(new java.awt.Color(0, 153, 153));
+        historial1.setFont(new java.awt.Font("OCR A Extended", 0, 26)); // NOI18N
+        historial1.setForeground(new java.awt.Color(255, 255, 255));
+        historial1.setText("Gráfico");
+        historial1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        historial1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        historial1.setMaximumSize(new java.awt.Dimension(336, 36));
+        historial1.setMinimumSize(new java.awt.Dimension(336, 36));
+        historial1.setPreferredSize(new java.awt.Dimension(336, 36));
+        historial1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                historial1MouseClicked(evt);
+            }
+        });
+        historial1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                historial1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout menuPanelLayout = new javax.swing.GroupLayout(menuPanel);
         menuPanel.setLayout(menuPanelLayout);
         menuPanelLayout.setHorizontalGroup(
             menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuPanelLayout.createSequentialGroup()
+                .addGap(12, 12, 12)
                 .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(historial1, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
+                    .addComponent(historial, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(CompactB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(menuPanelLayout.createSequentialGroup()
-                        .addGap(54, 54, 54)
-                        .addComponent(CompactB, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(menuPanelLayout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(DescB, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(menuPanelLayout.createSequentialGroup()
-                        .addGap(142, 142, 142)
-                        .addComponent(tituloHuffman)))
-                .addContainerGap(27, Short.MAX_VALUE))
+                        .addComponent(tituloHuffman)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(DescB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         menuPanelLayout.setVerticalGroup(
             menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuPanelLayout.createSequentialGroup()
-                .addContainerGap(38, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(tituloHuffman, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(CompactB, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(DescB, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(historial, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(historial1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(10, Short.MAX_VALUE))
         );
 
-        jPanel2.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 80, 460, 270));
+        jPanel2.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 80, 460, 340));
 
         background.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, 40, 1070, 460));
 
@@ -196,7 +248,7 @@ public class MainHamming extends javax.swing.JFrame {
     }//GEN-LAST:event_DescBMouseClicked
 
     private void DescBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DescBActionPerformed
-      DesprotegerHamming c = new DesprotegerHamming();
+        DesprotegerHamming c = new DesprotegerHamming();
         c.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_DescBActionPerformed
@@ -217,16 +269,45 @@ public class MainHamming extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_volverActionPerformed
 
+    private void historialMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historialMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_historialMouseClicked
+
+    private void historialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historialActionPerformed
+        List<EstadisticasArchivo> historial = HistorialEstadisticas.cargar();
+        StringBuilder info = new StringBuilder();
+        for (EstadisticasArchivo est : historial) {
+            info.append(est.toString()).append("\n");
+        }
+        JTextArea textArea = new JTextArea(info.toString());
+        textArea.setEditable(false);
+        textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(600, 400));
+        JOptionPane.showMessageDialog(null, scrollPane, "Historial de Estadísticas", JOptionPane.INFORMATION_MESSAGE);
+
+
+    }//GEN-LAST:event_historialActionPerformed
+
+    private void historial1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historial1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_historial1MouseClicked
+
+    private void historial1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historial1ActionPerformed
+     GraficoEstadisticas.mostrarGrafico();
+    }//GEN-LAST:event_historial1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CompactB;
     private javax.swing.JButton DescB;
     private javax.swing.JPanel background;
     private javax.swing.JButton exitB;
+    private javax.swing.JButton historial;
+    private javax.swing.JButton historial1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel menuPanel;
