@@ -517,7 +517,9 @@ public class DesprotegerHamming extends javax.swing.JFrame {
 
         for (int i = 0; i < sinGlobal.size(); i++) {
             if (syndrome != 0 && i == syndrome - 1) {
-                html.append("<font color='red'><b>").append(sinGlobal.get(i)).append("</b></font>");
+                html.append("<span style='background-color: #d62a2a;'>")
+                                .append(sinGlobal.get(i))
+                                .append("</span>");
             } else {
                 html.append(sinGlobal.get(i));
             }
