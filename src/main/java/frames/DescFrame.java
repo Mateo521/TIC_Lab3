@@ -315,13 +315,20 @@ public class DescFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_descompactarBActionPerformed
 
     private void estadisticasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estadisticasActionPerformed
-        // TODO add your handling code here:
 
-        JOptionPane.showMessageDialog(null, "\n"
-                + "- Tamaño del archivo compactado: " + descompactar.tamanioCodificado() + " Bytes\n"
-                + "- Tamaño del archivo descompactado: " + descompactar.tamanioDecodificado() + " Bytes\n",
-                "ETADÍSTICAS OBTENIDAS", JOptionPane.INFORMATION_MESSAGE);
+        
+         int codificado = (int) descompactar.tamanioCodificado();
+    int decodificado = (int) descompactar.tamanioDecodificado();
 
+    JOptionPane.showMessageDialog(null,
+        "- Tamaño del archivo compactado: " + codificado + " Bytes\n"
+        + "- Tamaño del archivo descompactado: " + decodificado + " Bytes",
+        "ESTADÍSTICAS OBTENIDAS", JOptionPane.INFORMATION_MESSAGE);
+
+    String nombreArchivo = descompactar.getArchivoDecodificado();  
+    EstadisticasHuffman stats = new EstadisticasHuffman(nombreArchivo, codificado, decodificado);
+    HistorialHuffman.guardar(stats);
+        
     }//GEN-LAST:event_estadisticasActionPerformed
 
     private void ruta_antesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ruta_antesActionPerformed

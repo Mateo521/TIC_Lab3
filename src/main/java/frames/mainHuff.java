@@ -33,6 +33,7 @@ public class mainHuff extends javax.swing.JFrame {
         CompactB = new javax.swing.JButton();
         DescB = new javax.swing.JButton();
         tituloHuffman = new javax.swing.JLabel();
+        DescB1 = new javax.swing.JButton();
         exitB = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         volver = new javax.swing.JButton();
@@ -95,37 +96,61 @@ public class mainHuff extends javax.swing.JFrame {
         tituloHuffman.setText("HUFFMAN");
         tituloHuffman.setToolTipText("");
 
+        DescB1.setBackground(new java.awt.Color(0, 153, 153));
+        DescB1.setFont(new java.awt.Font("OCR A Extended", 0, 26)); // NOI18N
+        DescB1.setForeground(new java.awt.Color(255, 255, 255));
+        DescB1.setText("Gráfico");
+        DescB1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        DescB1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        DescB1.setMaximumSize(new java.awt.Dimension(336, 36));
+        DescB1.setMinimumSize(new java.awt.Dimension(336, 36));
+        DescB1.setPreferredSize(new java.awt.Dimension(336, 36));
+        DescB1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                DescB1MouseClicked(evt);
+            }
+        });
+        DescB1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DescB1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout menuPanelLayout = new javax.swing.GroupLayout(menuPanel);
         menuPanel.setLayout(menuPanelLayout);
         menuPanelLayout.setHorizontalGroup(
             menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, menuPanelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(CompactB, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51))
             .addGroup(menuPanelLayout.createSequentialGroup()
                 .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(menuPanelLayout.createSequentialGroup()
-                        .addGap(145, 145, 145)
-                        .addComponent(tituloHuffman))
+                        .addContainerGap()
+                        .addComponent(CompactB, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE))
                     .addGroup(menuPanelLayout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(DescB, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(38, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(DescB1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(DescB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
+            .addGroup(menuPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(tituloHuffman)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         menuPanelLayout.setVerticalGroup(
             menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(menuPanelLayout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addGap(16, 16, 16)
                 .addComponent(tituloHuffman, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39)
-                .addComponent(CompactB, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(CompactB, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(DescB, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(DescB1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        jPanel2.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 70, 460, 290));
+        jPanel2.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 69, 460, -1));
 
         background.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, 40, 1070, 460));
 
@@ -216,6 +241,15 @@ public class mainHuff extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_volverActionPerformed
 
+    private void DescB1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DescB1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DescB1MouseClicked
+
+    private void DescB1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DescB1ActionPerformed
+        GraficoHuffman.mostrarGrafico();
+
+    }//GEN-LAST:event_DescB1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -224,6 +258,7 @@ public class mainHuff extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CompactB;
     private javax.swing.JButton DescB;
+    private javax.swing.JButton DescB1;
     private javax.swing.JPanel background;
     private javax.swing.JButton exitB;
     private javax.swing.JLabel jLabel3;

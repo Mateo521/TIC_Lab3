@@ -305,10 +305,13 @@ public class Hamming {
         return sb.toString();
     }
 
-    public static List<Integer> extraerDatosConCorreccion(List<Integer> receivedData) {
+
+    public static ResultadoHamming extraerDatosConCorreccion(List<Integer> receivedData) {
+    boolean huboCorreccion = false;
+
     List<Integer> data = new ArrayList<>(receivedData);
     int longitud = data.size();
-
+    
     // Separar el bit de paridad global
     int paridadGlobalRecibida = data.remove(longitud - 1);
 
@@ -317,13 +320,11 @@ public class Hamming {
     for (int i = 0; Math.pow(2, i) < data.size() + 1; i++) {
         int pos = (int) Math.pow(2, i);
         int parity = 0;
-
         for (int j = 1; j <= data.size(); j++) {
             if (((j >> i) & 1) == 1) {
                 parity ^= data.get(j - 1);
             }
         }
-
         if (parity != 0) {
             errorPos += pos;
         }
@@ -340,6 +341,7 @@ public class Hamming {
     if (calculadaParidadGlobal != 0 && errorPos != 0) {
         if (errorPos <= data.size()) {
             data.set(errorPos - 1, data.get(errorPos - 1) ^ 1); // corregir bit
+            huboCorreccion = true; // ✅ MARCAR CORRECCIÓN
         }
         // Si errorPos > data.size(), no se puede corregir, fuera de rango
     }
@@ -352,8 +354,20 @@ public class Hamming {
         }
     }
 
-    return datosCorregidos;
+    return new ResultadoHamming(datosCorregidos, huboCorreccion); // ✅ DEVOLVER CON INDICADOR
 }
+
+    public static class ResultadoHamming {
+    public final List<Integer> datos;
+    public final boolean huboCorreccion;
+
+    public ResultadoHamming(List<Integer> datos, boolean huboCorreccion) {
+        this.datos = datos;
+        this.huboCorreccion = huboCorreccion;
+    }
+}
+
+
     // Extrae los bits de datos sin corregir errores
     public static List<Integer> extraerDatosSinCorreccion(List<Integer> receivedData) {
         List<Integer> dataWithoutParity = new ArrayList<>();
@@ -393,69 +407,62 @@ public class Hamming {
         }
     }
 
-  
-    
     public static void guardarArchivoCodificado(List<List<Integer>> bloques, String filePath) throws IOException {
-    List<Byte> byteList = new ArrayList<>();
-    int bitCount = 0;
-    int currentByte = 0;
+        List<Byte> byteList = new ArrayList<>();
+        int bitCount = 0;
+        int currentByte = 0;
 
-    for (List<Integer> bloque : bloques) {
-        for (int bit : bloque) {
-            currentByte = (currentByte << 1) | bit;
-            bitCount++;
-            if (bitCount == 8) {
-                byteList.add((byte) currentByte);
-                currentByte = 0;
-                bitCount = 0;
+        for (List<Integer> bloque : bloques) {
+            for (int bit : bloque) {
+                currentByte = (currentByte << 1) | bit;
+                bitCount++;
+                if (bitCount == 8) {
+                    byteList.add((byte) currentByte);
+                    currentByte = 0;
+                    bitCount = 0;
+                }
             }
         }
+
+        // Rellenar el último byte si quedó incompleto
+        if (bitCount > 0) {
+            currentByte = currentByte << (8 - bitCount);
+            byteList.add((byte) currentByte);
+        }
+
+        byte[] byteArray = new byte[byteList.size()];
+        for (int i = 0; i < byteList.size(); i++) {
+            byteArray[i] = byteList.get(i);
+        }
+
+        Files.write(Paths.get(filePath), byteArray);
     }
 
-    // Rellenar el último byte si quedó incompleto
-    if (bitCount > 0) {
-        currentByte = currentByte << (8 - bitCount);
-        byteList.add((byte) currentByte);
-    }
-
-    byte[] byteArray = new byte[byteList.size()];
-    for (int i = 0; i < byteList.size(); i++) {
-        byteArray[i] = byteList.get(i);
-    }
-
-    Files.write(Paths.get(filePath), byteArray);
-}
-    
-
-    
-    
     public static List<List<Integer>> cargarArchivoCodificadoBinario(String filePath, int bitsPorBloque) throws IOException {
-    byte[] data = Files.readAllBytes(Paths.get(filePath));
-    List<Integer> todosLosBits = new ArrayList<>();
+        byte[] data = Files.readAllBytes(Paths.get(filePath));
+        List<Integer> todosLosBits = new ArrayList<>();
 
-    for (byte b : data) {
-        for (int i = 7; i >= 0; i--) {
-            int bit = (b >> i) & 1;
-            todosLosBits.add(bit);
+        for (byte b : data) {
+            for (int i = 7; i >= 0; i--) {
+                int bit = (b >> i) & 1;
+                todosLosBits.add(bit);
+            }
         }
+
+        List<List<Integer>> bloques = new ArrayList<>();
+        for (int i = 0; i < todosLosBits.size(); i += bitsPorBloque) {
+            if (i + bitsPorBloque <= todosLosBits.size()) {
+                List<Integer> bloque = new ArrayList<>(todosLosBits.subList(i, i + bitsPorBloque));
+                bloques.add(bloque);
+            } else {
+                // Bloque incompleto al final, puedes ignorarlo o lanzar error
+                System.err.println("Bloque incompleto ignorado.");
+            }
+        }
+
+        return bloques;
     }
 
-    List<List<Integer>> bloques = new ArrayList<>();
-    for (int i = 0; i < todosLosBits.size(); i += bitsPorBloque) {
-        if (i + bitsPorBloque <= todosLosBits.size()) {
-            List<Integer> bloque = new ArrayList<>(todosLosBits.subList(i, i + bitsPorBloque));
-            bloques.add(bloque);
-        } else {
-            // Bloque incompleto al final, puedes ignorarlo o lanzar error
-            System.err.println("Bloque incompleto ignorado.");
-        }
-    }
-
-    return bloques;
-}
-    
-    
-    
     public static List<List<Integer>> cargarArchivoCodificado(String filePath) throws IOException {
         List<List<Integer>> bloques = new ArrayList<>();
         List<String> lines = Files.readAllLines(Paths.get(filePath));
@@ -548,7 +555,6 @@ public class Hamming {
                 System.out.printf("Bloque %d: Error introducido en posicion %d (cambio de %d a %d)\n",
                         i + 1, position, originalBit, bloque.get(position));
 
-
             } else {
                 System.out.printf("Bloque %d: Sin cambios\n", i + 1);
             }
@@ -618,55 +624,49 @@ public class Hamming {
             }
 
             String outputPath = filePath.replace(".HA", ".DE").replace(".HE", ".DE");
-            
-            
+
             /*
             String decodedText = blocksToString(decodedBlocks, 8);
             Files.write(Paths.get(outputPath), decodedText.getBytes());
-            */
+             */
             byte[] decodedBytes = blocksToBytes(decodedBlocks); // <- Necesitamos esta función
             Files.write(Paths.get(outputPath), decodedBytes);
-
-            
-            
 
             System.out.println("Archivo decodificado guardado como: " + outputPath);
         } catch (IOException e) {
             System.out.println("Error al procesar el archivo: " + e.getMessage());
         }
     }
-    
-    
-    // En Hamming.java, verificar la conversión bits-bytes
-public static byte[] blocksToBytes(List<List<Integer>> blocks) {
-    List<Integer> allBits = new ArrayList<>();
-    for (List<Integer> block : blocks) {
-        allBits.addAll(block);
-    }
-    
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    int byteValue = 0;
-    int bitCount = 0;
-    
-    for (int bit : allBits) {
-        byteValue = (byteValue << 1) | bit;
-        bitCount++;
-        if (bitCount == 8) {
-            outputStream.write(byteValue);
-            byteValue = 0;
-            bitCount = 0;
-        }
-    }
-    
-    // Manejar bits sobrantes
-    if (bitCount > 0) {
-        byteValue <<= (8 - bitCount); // Alinear a la izquierda
-        outputStream.write(byteValue);
-    }
-    
-    return outputStream.toByteArray();
-}
 
+    // En Hamming.java, verificar la conversión bits-bytes
+    public static byte[] blocksToBytes(List<List<Integer>> blocks) {
+        List<Integer> allBits = new ArrayList<>();
+        for (List<Integer> block : blocks) {
+            allBits.addAll(block);
+        }
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        int byteValue = 0;
+        int bitCount = 0;
+
+        for (int bit : allBits) {
+            byteValue = (byteValue << 1) | bit;
+            bitCount++;
+            if (bitCount == 8) {
+                outputStream.write(byteValue);
+                byteValue = 0;
+                bitCount = 0;
+            }
+        }
+
+        // Manejar bits sobrantes
+        if (bitCount > 0) {
+            byteValue <<= (8 - bitCount); // Alinear a la izquierda
+            outputStream.write(byteValue);
+        }
+
+        return outputStream.toByteArray();
+    }
 
     public static void decodificarConCorreccion(Scanner scanner) {
         System.out.print("Ingrese la ruta del archivo .HAx o .HEx: ");
@@ -693,10 +693,7 @@ public static byte[] blocksToBytes(List<List<Integer>> blocks) {
 
             // Convertir a texto y mostrar resultado
             byte[] TextoCorregido = blocksToBytes(BloquesCorregidos);
-            
-          
-            
-            
+
             System.out.println("\nTexto corregido: " + Arrays.toString(TextoCorregido));
 
             String outputPath = filePath.replace(".HA", ".DC").replace(".HE", ".DC");
