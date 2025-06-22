@@ -9,6 +9,7 @@ import com.unsl.huffman.Codificar;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -330,12 +331,16 @@ public class CompactFrame extends javax.swing.JFrame {
 
         int codificado = (int) compact.tamanioCodificado();
         int decodificado = (int) compact.tamanioDecodificado();
-
-        JOptionPane.showMessageDialog(null,
-                "- Tamaño del archivo compactado: " + codificado + " Bytes\n"
-                + "- Tamaño del archivo descompactado: " + decodificado + " Bytes",
-                "ESTADÍSTICAS OBTENIDAS", JOptionPane.INFORMATION_MESSAGE);
-
+        float orig = (float) compact.tamanioOriginal(), nuevo = (float) compact.tamanioCodificado();
+        DecimalFormat df = new DecimalFormat("#.00");
+        
+        
+        JOptionPane.showMessageDialog(null, "\n"
+                    + "- Tamaño del archivo original: " + orig + " Bytes\n"
+                    + "- Tamaño del archivo ya compactado: " + nuevo + " Bytes\n"
+                    + "- Porcentaje de Compactado: "+df.format((1-(nuevo /  orig))*100) +"%\n"
+                    ,"ETADÍSTICAS OBTENIDAS", JOptionPane.INFORMATION_MESSAGE);
+        
         String nombreArchivo = compact.getArchivoDecodificado();
         EstadisticasHuffman stats = new EstadisticasHuffman(nombreArchivo, codificado, decodificado);
         HistorialHuffman.guardar(stats);
