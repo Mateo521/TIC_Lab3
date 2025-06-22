@@ -36,7 +36,6 @@ frames\ProtegerHamming$6.class
 com\unsl\huffman\FilesClass.class
 frames\CompactFrame$5.class
 frames\MainHamming$4.class
-frames\MainHamming$11.class
 frames\ProtegerHamming$4.class
 frames\MainHamming.class
 frames\CompactFrame$8.class
@@ -61,7 +60,6 @@ frames\DescFrame$4.class
 frames\GraficoHuffman.class
 frames\mainHuff$4.class
 frames\ProtegerHamming$5.class
-frames\MainHamming$10.class
 frames\CompactFrame$4.class
 frames\EstadisticasHamming.class
 frames\MainHyH$6.class

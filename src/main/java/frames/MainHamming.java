@@ -41,7 +41,6 @@ public class MainHamming extends javax.swing.JFrame {
         CompactB = new javax.swing.JButton();
         DescB = new javax.swing.JButton();
         tituloHuffman = new javax.swing.JLabel();
-        historial = new javax.swing.JButton();
         historial1 = new javax.swing.JButton();
         exitB = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -104,26 +103,6 @@ public class MainHamming extends javax.swing.JFrame {
         tituloHuffman.setText("HAMMING");
         tituloHuffman.setToolTipText("");
 
-        historial.setBackground(new java.awt.Color(0, 153, 153));
-        historial.setFont(new java.awt.Font("OCR A Extended", 0, 26)); // NOI18N
-        historial.setForeground(new java.awt.Color(255, 255, 255));
-        historial.setText("Historial");
-        historial.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        historial.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        historial.setMaximumSize(new java.awt.Dimension(336, 36));
-        historial.setMinimumSize(new java.awt.Dimension(336, 36));
-        historial.setPreferredSize(new java.awt.Dimension(336, 36));
-        historial.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                historialMouseClicked(evt);
-            }
-        });
-        historial.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                historialActionPerformed(evt);
-            }
-        });
-
         historial1.setBackground(new java.awt.Color(0, 153, 153));
         historial1.setFont(new java.awt.Font("OCR A Extended", 0, 26)); // NOI18N
         historial1.setForeground(new java.awt.Color(255, 255, 255));
@@ -152,7 +131,6 @@ public class MainHamming extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(historial1, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
-                    .addComponent(historial, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(CompactB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(menuPanelLayout.createSequentialGroup()
                         .addComponent(tituloHuffman)
@@ -170,13 +148,11 @@ public class MainHamming extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(DescB, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(historial, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(historial1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
-        jPanel2.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 80, 460, 340));
+        jPanel2.add(menuPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 80, 460, 270));
 
         background.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, 40, 1070, 460));
 
@@ -277,25 +253,6 @@ public class MainHamming extends javax.swing.JFrame {
      GraficoEstadisticas.mostrarGrafico();
     }//GEN-LAST:event_historial1ActionPerformed
 
-    private void historialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historialActionPerformed
-        List<EstadisticasHamming> historial = HistorialHamming.cargar();
-        StringBuilder info = new StringBuilder();
-        for (EstadisticasHamming est : historial) {
-            info.append(est.toString()).append("\n");
-        }
-        JTextArea textArea = new JTextArea(info.toString());
-        textArea.setEditable(false);
-        textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setPreferredSize(new Dimension(600, 400));
-        JOptionPane.showMessageDialog(null, scrollPane, "Historial de Estadísticas", JOptionPane.INFORMATION_MESSAGE);
-
-    }//GEN-LAST:event_historialActionPerformed
-
-    private void historialMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historialMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_historialMouseClicked
-
     /**
      * @param args the command line arguments
      */
@@ -305,7 +262,6 @@ public class MainHamming extends javax.swing.JFrame {
     private javax.swing.JButton DescB;
     private javax.swing.JPanel background;
     private javax.swing.JButton exitB;
-    private javax.swing.JButton historial;
     private javax.swing.JButton historial1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel2;
