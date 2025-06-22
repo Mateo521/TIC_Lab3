@@ -17,7 +17,9 @@ import java.util.logging.Logger;
  * @author Usuario
  */
 public class CompactFrame extends javax.swing.JFrame {
-public static Codificar compact = new Codificar();
+
+    public static Codificar compact = new Codificar();
+
     /**
      * Creates new form CompactFrame
      */
@@ -272,36 +274,34 @@ public static Codificar compact = new Codificar();
 
     private void compactarBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compactarBActionPerformed
         // TODO add your handling code here:
-        if(ruta_antes.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Debe seleccionar un archivo","Error", JOptionPane.ERROR_MESSAGE);
-            }else{
-            
-           JOptionPane.showMessageDialog(
-                null,
-                "\nEl archivo fue compactado y almacenado en la dirección: " + compact.getArchivoCodificado(),
-                "Compactación exitosa",
-                JOptionPane.INFORMATION_MESSAGE
+        if (ruta_antes.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe seleccionar un archivo", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+
+            JOptionPane.showMessageDialog(
+                    null,
+                    "\nEl archivo fue compactado y almacenado en la dirección: " + compact.getArchivoCodificado(),
+                    "Compactación exitosa",
+                    JOptionPane.INFORMATION_MESSAGE
             );
-            
+
             try {
                 compact.compactar();
-                FileReader fr= new FileReader(compact.getArchivoCodificado());
+                FileReader fr = new FileReader(compact.getArchivoCodificado());
                 BufferedReader br = new BufferedReader(fr);
-                String texto="";
-                String linea="";
-                while(((linea=br.readLine())!=null)){
-                    texto+=linea+"\n";
+                String texto = "";
+                String linea = "";
+                while (((linea = br.readLine()) != null)) {
+                    texto += linea + "\n";
                 }
                 DESPUES.setText(texto);
-                  estadisticas.setEnabled(true);
+                estadisticas.setEnabled(true);
             } catch (IOException ex) {
                 Logger.getLogger(CompactFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
-            
 
-               
     }//GEN-LAST:event_compactarBActionPerformed
 
     private void ruta_antesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ruta_antesActionPerformed
@@ -312,34 +312,40 @@ public static Codificar compact = new Codificar();
         // TODO add your handling code here:
         compact.setArchivoEntrada("");
         compact.SelectArchivo();
-          if(!compact.getArchivoEntrada().equals("")){
-             ruta_antes.setText(compact.getArchivoEntrada()); //escribe la ruta del archivo
+        if (!compact.getArchivoEntrada().equals("")) {
+            ruta_antes.setText(compact.getArchivoEntrada()); //escribe la ruta del archivo
             try {
                 ANTES.setText(compact.abrirMensajeOriginal());
-             
+
             } catch (IOException ex) {
                 Logger.getLogger(CompactFrame.class.getName()).log(Level.SEVERE, null, ex);
-            } 
-    }
-        
-        
+            }
+        }
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void estadisticasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estadisticasActionPerformed
         // TODO add your handling code here:
-        
-        JOptionPane.showMessageDialog(null, "\n"
-                    + "- Tamaño del archivo original: " + compact.tamanioOriginal() + " Bytes\n"
-                    + "- Tamaño del archivo ya compactado: " + compact.tamanioCodificado() + " Bytes\n"
-                    ,"ETADÍSTICAS OBTENIDAS", JOptionPane.INFORMATION_MESSAGE);
+
+        int codificado = (int) compact.tamanioCodificado();
+        int decodificado = (int) compact.tamanioDecodificado();
+
+        JOptionPane.showMessageDialog(null,
+                "- Tamaño del archivo compactado: " + codificado + " Bytes\n"
+                + "- Tamaño del archivo descompactado: " + decodificado + " Bytes",
+                "ESTADÍSTICAS OBTENIDAS", JOptionPane.INFORMATION_MESSAGE);
+
+        String nombreArchivo = compact.getArchivoDecodificado();
+        EstadisticasHuffman stats = new EstadisticasHuffman(nombreArchivo, codificado, decodificado);
+        HistorialHuffman.guardar(stats);
+
+
     }//GEN-LAST:event_estadisticasActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    
-    
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea ANTES;

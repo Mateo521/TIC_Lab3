@@ -269,14 +269,18 @@ public class MainHamming extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_volverActionPerformed
 
-    private void historialMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historialMouseClicked
+    private void historial1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historial1MouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_historialMouseClicked
+    }//GEN-LAST:event_historial1MouseClicked
+
+    private void historial1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historial1ActionPerformed
+     GraficoEstadisticas.mostrarGrafico();
+    }//GEN-LAST:event_historial1ActionPerformed
 
     private void historialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historialActionPerformed
-        List<EstadisticasArchivo> historial = HistorialEstadisticas.cargar();
+        List<EstadisticasHamming> historial = HistorialHamming.cargar();
         StringBuilder info = new StringBuilder();
-        for (EstadisticasArchivo est : historial) {
+        for (EstadisticasHamming est : historial) {
             info.append(est.toString()).append("\n");
         }
         JTextArea textArea = new JTextArea(info.toString());
@@ -286,16 +290,11 @@ public class MainHamming extends javax.swing.JFrame {
         scrollPane.setPreferredSize(new Dimension(600, 400));
         JOptionPane.showMessageDialog(null, scrollPane, "Historial de Estadísticas", JOptionPane.INFORMATION_MESSAGE);
 
-
     }//GEN-LAST:event_historialActionPerformed
 
-    private void historial1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historial1MouseClicked
+    private void historialMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_historialMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_historial1MouseClicked
-
-    private void historial1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historial1ActionPerformed
-     GraficoEstadisticas.mostrarGrafico();
-    }//GEN-LAST:event_historial1ActionPerformed
+    }//GEN-LAST:event_historialMouseClicked
 
     /**
      * @param args the command line arguments

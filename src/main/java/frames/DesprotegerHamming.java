@@ -612,21 +612,19 @@ public class DesprotegerHamming extends javax.swing.JFrame {
         scrollPane.setPreferredSize(new Dimension(600, 400));
         JOptionPane.showMessageDialog(this, scrollPane, "Estadísticas de Decodificación", JOptionPane.INFORMATION_MESSAGE);
 
-        
-        HistorialEstadisticas.guardar(new EstadisticasArchivo(
-    EstadisticasArchivo.Tipo.DESPROTECCION,
-    "archivoDesprotegido", 
-    blockCount,
-    0, 
-    0,
-    bitsRecuperados,
-    erroresDetectados,
-    erroresCorregidos,
-    tasaRecuperacion,
-    0 // overhead no aplica
-));
-        
-        
+        HistorialHamming.guardar(new EstadisticasHamming(
+                EstadisticasHamming.Tipo.DESPROTECCION,
+                "archivoDesprotegido",
+                blockCount,
+                0,
+                0,
+                bitsRecuperados,
+                erroresDetectados,
+                erroresCorregidos,
+                tasaRecuperacion,
+                0
+        ));
+
         erroresDetectados = 0;
         erroresCorregidos = 0;
 

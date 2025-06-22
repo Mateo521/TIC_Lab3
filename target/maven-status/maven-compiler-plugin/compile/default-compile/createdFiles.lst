@@ -4,6 +4,7 @@ com\unsl\huffman\NodoHuffman.class
 frames\DesprotegerHamming$8.class
 frames\MainHamming$9.class
 frames\MainHyH$5.class
+frames\HistorialHamming.class
 frames\ProtegerHamming$9.class
 frames\MainHyH$1.class
 frames\DesprotegerHamming$4.class
@@ -17,11 +18,10 @@ frames\CompactFrame$6.class
 frames\mainHuff$3.class
 frames\mainHuff$6.class
 frames\DesprotegerHamming$1.class
-frames\EstadisticasArchivo$Tipo.class
 frames\MainHyH$4.class
 frames\DesprotegerHamming$7.class
+frames\mainHuff$9.class
 frames\CompactFrame$2.class
-frames\HistorialEstadisticas.class
 com\unsl\huffman\ReadDocxFile.class
 frames\DescFrame$6.class
 frames\MainHamming$5.class
@@ -33,7 +33,6 @@ frames\mainHuff.class
 frames\DesprotegerHamming.class
 frames\ProtegerHamming$3.class
 frames\ProtegerHamming$6.class
-frames\EstadisticasArchivo.class
 com\unsl\huffman\FilesClass.class
 frames\CompactFrame$5.class
 frames\MainHamming$4.class
@@ -45,10 +44,13 @@ frames\DescFrame$5.class
 frames\DesprotegerHamming$3.class
 frames\mainHuff$5.class
 frames\ProtegerHamming.class
+frames\EstadisticasHamming$Tipo.class
 frames\MainHamming$7.class
 frames\DescFrame$1.class
 frames\mainHuff$1.class
 frames\DesprotegerHamming$9.class
+frames\EstadisticasHuffman.class
+frames\mainHuff$8.class
 frames\CompactFrame$1.class
 frames\DesprotegerHamming$6.class
 frames\ProtegerHamming$7.class
@@ -56,10 +58,12 @@ com\unsl\hamming\Hamming.class
 com\unsl\huffman\Probabilidades.class
 com\unsl\hamming\Hamming$ResultadoHamming.class
 frames\DescFrame$4.class
+frames\GraficoHuffman.class
 frames\mainHuff$4.class
 frames\ProtegerHamming$5.class
 frames\MainHamming$10.class
 frames\CompactFrame$4.class
+frames\EstadisticasHamming.class
 frames\MainHyH$6.class
 frames\DescFrame$2.class
 frames\CompactFrame$7.class
@@ -75,4 +79,5 @@ frames\DesprotegerHamming$5.class
 frames\MainHyH.class
 frames\MainHamming$3.class
 frames\DescFrame$8.class
+frames\HistorialHuffman.class
 frames\mainHuff$7.class

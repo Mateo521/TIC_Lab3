@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class EstadisticasArchivo implements Serializable {
+public class EstadisticasHamming implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,7 +33,7 @@ public class EstadisticasArchivo implements Serializable {
     private final double tasaSinErrores;
     private final double overhead;
 
-    public EstadisticasArchivo(
+    public EstadisticasHamming(
             Tipo tipo,
             String nombreArchivo,
             int bloques,

@@ -518,8 +518,8 @@ public class ProtegerHamming extends javax.swing.JFrame {
         scrollPane.setPreferredSize(new Dimension(600, 400));
         JOptionPane.showMessageDialog(this, scrollPane, "Estadísticas de Protección", JOptionPane.INFORMATION_MESSAGE);
 
-        HistorialEstadisticas.guardar(new EstadisticasArchivo(
-                EstadisticasArchivo.Tipo.PROTECCION,
+        HistorialHamming.guardar(new EstadisticasHamming(
+                EstadisticasHamming.Tipo.PROTECCION,
                 rutaSeleccionada,
                 blockCount,
                 totalOriginalBits,
