@@ -305,7 +305,55 @@ public class Hamming {
         return sb.toString();
     }
 
+     public static List<Integer> extraerDatosConCorreccionShow(List<Integer> receivedData) {
+        List<Integer> data = new ArrayList<>(receivedData);
+        int longitud = data.size();
 
+        // Separar el bit de paridad global
+        int paridadGlobalRecibida = data.remove(longitud - 1);
+
+        // Detectar error usando bits de paridad locales (Hamming)
+        int errorPos = 0;
+        for (int i = 0; Math.pow(2, i) < data.size() + 1; i++) {
+            int pos = (int) Math.pow(2, i);
+            int parity = 0;
+
+            for (int j = 1; j <= data.size(); j++) {
+                if (((j >> i) & 1) == 1) {
+                    parity ^= data.get(j - 1);
+                }
+            }
+
+            if (parity != 0) {
+                errorPos += pos;
+            }
+        }
+
+        // Verificar paridad global
+        int calculadaParidadGlobal = 0;
+        for (int bit : data) {
+            calculadaParidadGlobal ^= bit;
+        }
+        calculadaParidadGlobal ^= paridadGlobalRecibida;
+
+        // Si la paridad global también indica error y hay una posición con error → corregir
+        if (calculadaParidadGlobal != 0 && errorPos != 0) {
+            if (errorPos <= data.size()) {
+                data.set(errorPos - 1, data.get(errorPos - 1) ^ 1); // corregir bit
+            }
+            // Si errorPos > data.size(), no se puede corregir, fuera de rango
+        }
+
+        // Extraer solo los bits de datos (excluyendo posiciones de paridad)
+        List<Integer> datosCorregidos = new ArrayList<>();
+        for (int i = 0; i < data.size(); i++) {
+            if (!esPotenciaDeDos(i + 1)) {
+                datosCorregidos.add(data.get(i));
+            }
+        }
+
+        return datosCorregidos;
+    }
     public static ResultadoHamming extraerDatosConCorreccion(List<Integer> receivedData) {
     boolean huboCorreccion = false;
 

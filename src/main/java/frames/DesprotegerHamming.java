@@ -15,6 +15,7 @@ import static com.unsl.hamming.Hamming.cargarArchivoCodificado;
 import static com.unsl.hamming.Hamming.cargarArchivoCodificadoBinario;
 import static com.unsl.hamming.Hamming.detectarYCorregirErrores;
 import static com.unsl.hamming.Hamming.extraerDatosConCorreccion;
+import static com.unsl.hamming.Hamming.extraerDatosConCorreccionShow;
 import static com.unsl.hamming.Hamming.extraerDatosSinCorreccion;
 import static com.unsl.hamming.Hamming.guardarArchivoCodificado;
 import static com.unsl.hamming.Hamming.procesoEnBloques;
@@ -338,6 +339,7 @@ public class DesprotegerHamming extends javax.swing.JFrame {
             List<List<Integer>> bloques = cargarArchivoCodificadoBinario(inputPath, bloqueTamanio);
 
             List<List<Integer>> bloquesDecodificados = new ArrayList<>();
+            List<List<Integer>> bloquesDecodificados1 = new ArrayList<>();
             StringBuilder resultadoTexto = new StringBuilder("<html><body style='font-family:monospace;'>");
 
             for (int i = 0; i < bloques.size(); i++) {
@@ -357,14 +359,17 @@ public class DesprotegerHamming extends javax.swing.JFrame {
                 if (resultado.huboCorreccion) {
                     erroresCorregidos++;
                 }
+                List<Integer> datos1 = extraerDatosConCorreccionShow(bloque);
+                bloquesDecodificados1.add(datos1);
                 bloquesDecodificados.add(datos);
             }
 
             byte[] textoCorregido = blocksToBytes(bloquesDecodificados);
-
+            byte[] textoCodificado1 = blocksToBytes(bloquesDecodificados1);
+            
             this.archivoDesprotegido = bloquesDecodificados;
 
-            String texto = new String(textoCorregido, StandardCharsets.UTF_8);
+            String texto = new String(textoCodificado1, StandardCharsets.UTF_8);
 
             corregido.setText(texto);
 
@@ -411,6 +416,7 @@ public class DesprotegerHamming extends javax.swing.JFrame {
             List<List<Integer>> bloques = cargarArchivoCodificadoBinario(inputPath, bloqueTamanio);
 
             List<List<Integer>> bloquesDecodificados = new ArrayList<>();
+            List<List<Integer>> bloquesDecodificados1 = new ArrayList<>();
             StringBuilder resultadoTexto = new StringBuilder("<html><body style='font-family:monospace;'>");
 
             for (int i = 0; i < bloques.size(); i++) {
@@ -429,17 +435,19 @@ public class DesprotegerHamming extends javax.swing.JFrame {
                 if (resultado.huboCorreccion) {
                     erroresCorregidos++; // contar solo si hubo una corrección real
                 }
-
+                List<Integer> datos1 = extraerDatosSinCorreccion(bloque);
+                bloquesDecodificados1.add(datos1);
                 resultadoTexto.append(bitsMarcandoErrorVisual(bloque)).append(" ");
 
                 bloquesDecodificados.add(datos);
             }
 
             byte[] textoDecodificado = blocksToBytes(bloquesDecodificados);
+            byte[] textoDecodificado1 = blocksToBytes(bloquesDecodificados1);
 
             this.archivoDesprotegido = bloquesDecodificados;
 
-            String texto = new String(textoDecodificado, StandardCharsets.UTF_8);
+            String texto = new String(textoDecodificado1, StandardCharsets.UTF_8);
 
             corregido.setText(texto);
 
@@ -601,7 +609,6 @@ public class DesprotegerHamming extends javax.swing.JFrame {
         stats.append("==============================\n\n");
         stats.append("Cantidad de bloques: ").append(blockCount).append("\n");
         stats.append("Bits totales recuperados: ").append(bitsRecuperados).append("\n");
-        stats.append("Errores detectados por paridad global: ").append(erroresDetectados).append("\n");
         stats.append("Errores corregidos (Hamming): ").append(erroresCorregidos).append("\n");
 
         double tasaRecuperacion = 100.0 * (blockCount - erroresCorregidos) / blockCount;
