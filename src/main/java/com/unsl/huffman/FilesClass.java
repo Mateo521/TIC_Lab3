@@ -46,9 +46,7 @@ public class FilesClass {
         ext = ext.toLowerCase();
 
       
-        return ext.equals("huf") || ext.equals("de1") || ext.equals("de2")
-                || ext.equals("de3") || ext.equals("dc1") || ext.equals("dc2")
-                || ext.equals("dc3");
+        return ext.equals("huf") ||ext.equals("dc1") || ext.equals("dc2") || ext.equals("dc3");
     }
 
     public static String getExtensionFiles(String ruta) {

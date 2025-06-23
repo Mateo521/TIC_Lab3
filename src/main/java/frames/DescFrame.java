@@ -134,7 +134,7 @@ public class DescFrame extends javax.swing.JFrame {
         jPanel6.setLayout(null);
 
         archivo_descompactar.setFont(new java.awt.Font("OCR A Extended", 0, 18)); // NOI18N
-        archivo_descompactar.setText("Seleccionar archivo \".huf\" , \".txt\", \".DE1\"...");
+        archivo_descompactar.setText("Seleccionar archivo \".huf\" , \".txt\", \".DCx\"");
         archivo_descompactar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         archivo_descompactar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
